@@ -1,5 +1,6 @@
 "use client";
 import { LayoutWithSidebar } from "@/components/layouts/LayoutWithSidebar";
+import { useProtectRoute } from "@/hooks/useProtectRoute";
 import { queryClient } from "@/lib/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { Metadata } from "next";
@@ -17,6 +18,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  //useProtectRoute(); // Chặn không cho user chưa login vào
   return (
     <QueryClientProvider client={queryClient}>
       <LayoutWithSidebar>{children}</LayoutWithSidebar>
