@@ -10,6 +10,8 @@ import banner_mau_to_roi_phong_kham from "@/assets/images/banner-mau-to-roi-phon
 import banner_1 from "@/assets/images/banner-1.png";
 import banner_tinh_1 from "@/assets/images/pktmngocanh.png";
 import banner_tinh_2 from "@/assets/images/banner-doi-ngu-bac-si-4.png";
+import { MotionFadeIn, MotionItem, MotionSection } from "../MotionWrappers";
+import { CheckCircle, MapPin, TrendingUp } from "lucide-react";
 
 // Dữ liệu danh mục
 const EVENT_CARDS = [
@@ -41,115 +43,153 @@ const EVENT_CARDS = [
 
 export default function BannerSection() {
   return (
-    <section className="w-full min-h-screen flex flex-col bg-white">
-      {/* BANNER (trên cùng) */}
-      <div className="flex-shrink-0">
-        <div className="grid grid-cols-1 md:grid-cols-12 items-stretch">
-          {/* SWIPER */}
-          <div className="col-span-8 relative overflow-hidden shadow-md min-h-[180px] md:min-h-[260px] lg:min-h-[230px] xl:min-h-[350px]">
-            <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              loop={true}
-              autoplay={{ delay: 5500, disableOnInteraction: false }}
-              pagination={{
-                clickable: true,
-                el: ".swiper-pagination",
-              }}
-              navigation={{
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              }}
-              slidesPerView={1}
-              spaceBetween={10}
-              className="w-full h-full"
-            >
-              <SwiperSlide>
-                <Image
-                  src={banner_mau_to_roi_phong_kham}
-                  alt="Image 1"
-                  fill
-                  className="object-cover w-full h-full"
-                  sizes="(min-width: 1024px) 66vw, 100vw"
-                  priority
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src={banner_doi_tac}
-                  alt="Image 2"
-                  fill
-                  className="object-cover w-full h-full"
-                  sizes="(min-width: 1024px) 66vw, 100vw"
-                  priority
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src={banner_1}
-                  alt="Image 3"
-                  fill
-                  className="object-cover w-full h-full"
-                  sizes="(min-width: 1024px) 66vw, 100vw"
-                  priority
-                />
-              </SwiperSlide>
-              <div className="swiper-pagination absolute bottom-2 left-0 right-0 flex justify-center space-x-2 z-10" />
-              <div className="swiper-button-next text-white text-xl absolute top-1/2 -translate-y-1/2 right-2 rounded-full p-2 opacity-70 hover:opacity-100 transition-all z-10" />
-              <div className="swiper-button-prev text-white text-xl absolute top-1/2 -translate-y-1/2 left-2 rounded-full p-2 opacity-70 hover:opacity-100 transition-all z-10" />
-            </Swiper>
-          </div>
-          {/* BANNER TĨNH */}
-          <div className="col-span-4 flex flex-col">
-            <div className="relative overflow-hidden shadow-md flex-1 min-h-[80px] md:min-h-[130px] xl:min-h-[170px]">
-              <Image
-                src={banner_tinh_2}
-                alt="Right Banner 1"
-                fill
-                className="w-full h-full object-cover"
-                sizes="(min-width: 1024px) 33vw, 100vw"
-              />
+    <section className="w-full  flex flex-col bg-white">
+      {/* Facility Gallery Section */}
+      <MotionSection className=" bg-gradient-to-b from-white to-emerald-50/30">
+        <div className=" mx-auto px-4 sm:px-6 lg:px-8 mt-1">
+          <MotionFadeIn>
+            {/* <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
+                <MapPin className="w-5 h-5" />
+                Cơ sở vật chất
+              </div>
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                Không gian điều trị{" "}
+                <span className="text-blue-600">hiện đại & xanh</span>
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Phòng khám chuẩn quốc tế với không gian xanh, thân thiện môi
+                trường, trang thiết bị y tế tiên tiến nhất hiện nay
+              </p>
+            </div> */}
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[400px]">
+              {/* Main Gallery Slider */}
+              <div className="lg:col-span-2 relative overflow-hidden rounded-3xl shadow-2xl h-full group">
+                <Swiper
+                  modules={[Navigation, Pagination, Autoplay]}
+                  loop
+                  autoplay={{ delay: 4000, disableOnInteraction: false }}
+                  pagination={{
+                    clickable: true,
+                    el: ".hero-swiper-pagination",
+                    bulletActiveClass: "!bg-emerald-500",
+                  }}
+                  navigation={{
+                    nextEl: ".hero-swiper-button-next",
+                    prevEl: ".hero-swiper-button-prev",
+                  }}
+                  slidesPerView={1}
+                  className="w-full h-full"
+                >
+                  {[
+                    {
+                      img: banner_mau_to_roi_phong_kham,
+                      title: "Phòng khám hiện đại",
+                    },
+                    { img: banner_doi_tac, title: "Đối tác uy tín" },
+                    { img: banner_1, title: "Không gian xanh" },
+                  ].map((item, idx) => (
+                    <SwiperSlide key={idx}>
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={item.img}
+                          alt={item.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          sizes="(min-width: 1024px) 66vw, 100vw"
+                          priority={idx === 0}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                        <div className="absolute bottom-6 left-6 text-white">
+                          <h3 className="text-2xl font-bold mb-2">
+                            {item.title}
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-5 h-5 text-emerald-400" />
+                            <span className="text-emerald-200">
+                              Chứng nhận quốc tế
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+
+                  {/* Enhanced Navigation */}
+                  <div className="hero-swiper-pagination absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10"></div>
+                  <div className="hero-swiper-button-next absolute top-1/2 -translate-y-1/2 right-4 w-12 h-12 bg-white/95 hover:bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer z-10 group/btn">
+                    <svg
+                      className="w-6 h-6 text-emerald-600 group-hover/btn:text-emerald-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="hero-swiper-button-prev absolute top-1/2 -translate-y-1/2 left-4 w-12 h-12 bg-white/95 hover:bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer z-10 group/btn">
+                    <svg
+                      className="w-6 h-6 text-emerald-600 group-hover/btn:text-emerald-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </div>
+                </Swiper>
+              </div>
+
+              {/* Side Images with Enhanced Design */}
+              <div className="space-y-6">
+                {[
+                  {
+                    img: banner_tinh_2,
+                    title: "Đội ngũ bác sĩ",
+                    subtitle: "Chuyên gia hàng đầu",
+                  },
+                  {
+                    img: banner_tinh_1,
+                    title: "Phòng khám",
+                    subtitle: "Không gian xanh",
+                  },
+                ].map((item, i) => (
+                  <MotionItem key={i} delay={i * 0.15}>
+                    <div className="relative overflow-hidden rounded-2xl shadow-xl h-[185px] group cursor-pointer">
+                      <Image
+                        src={item.img}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        sizes="(min-width: 1024px) 33vw, 100vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
+                      <div className="absolute bottom-4 left-4 text-white">
+                        <h4 className="text-lg font-bold">{item.title}</h4>
+                        <p className="text-sm text-gray-200">{item.subtitle}</p>
+                      </div>
+                      <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <TrendingUp className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  </MotionItem>
+                ))}
+              </div>
             </div>
-            <div className="relative overflow-hidden shadow-md flex-1 min-h-[80px] md:min-h-[130px] xl:min-h-[170px]">
-              <Image
-                src={banner_tinh_1}
-                alt="Right Banner 2"
-                fill
-                className="w-full h-full object-cover"
-                sizes="(min-width: 1024px) 33vw, 100vw"
-              />
-            </div>
-          </div>
+          </MotionFadeIn>
         </div>
-      </div>
-      {/* DANH MỤC DƯỚI, LUÔN ĐẦY PHẦN CÒN LẠI */}
-      <div className="flex-1 flex flex-col justify-center">
-        <div className="w-full max-w-7xl mx-auto px-2 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {EVENT_CARDS.map((ev) => (
-              <a
-                href={ev.href}
-                key={ev.title}
-                className="group bg-gradient-to-br from-green-50 via-white to-emerald-50 hover:from-green-100 hover:to-green-200 rounded-2xl shadow-md flex flex-col items-center justify-center p-5 text-center border border-green-100 transition hover:-translate-y-1 hover:shadow-lg h-full"
-                style={{ minHeight: 190 }}
-              >
-                <div className="w-14 h-14 mb-2 flex items-center justify-center rounded-full bg-white border border-green-200 shadow group-hover:scale-110 transition">
-                  <Image
-                    src={ev.image}
-                    alt={ev.title}
-                    width={44}
-                    height={44}
-                    className="object-contain"
-                  />
-                </div>
-                <div className="font-bold text-green-800 text-lg">
-                  {ev.title}
-                </div>
-                <div className="text-green-700 text-sm mt-1">{ev.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+      </MotionSection>
     </section>
   );
 }

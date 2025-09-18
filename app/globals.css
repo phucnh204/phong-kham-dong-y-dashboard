@@ -113,8 +113,41 @@
   --sidebar-ring: oklch(0.7 0.2 150);
 }
 
+/* css actin narbar */
 .nav-link.active {
   color: #fff !important;
   font-weight: 700;
-  background-color: #22c55e !important;
+  background-color: #99aca0 !important;
+}
+
+/* css thanh scroll */
+::-webkit-scrollbar {
+  width: 6px; /* thanh mỏng  */
+}
+
+::-webkit-scrollbar-track {
+  background: #e0f7e0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4caf50;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #388e3c;
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #4caf50 #e0f7e0;
+  scroll-behavior: smooth;
+}
+
+/* Ngăn tràn ngang */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
 }

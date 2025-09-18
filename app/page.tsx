@@ -6,6 +6,7 @@ import Footer from "@/components/clientLayouts/Footer";
 import Hero from "@/components/clientLayouts/Hero";
 import BannerSection from "@/components/clientLayouts/BannerSection";
 import About from "@/components/clientLayouts/About";
+import ServiceGrid from "@/components/clientLayouts/ServiceGrid";
 
 export const metadata = {
   title: "Phòng Khám Đông Y Cần Thơ",
@@ -26,11 +27,12 @@ export default function RootLayout({
       <Navbar />
       <Hero />
       <About />
+      <ServiceGrid />
       {/* <BannerSection /> */}
       {/* Main content area */}
       <main>{children}</main>
       {/* Footer */}
-      {/* <Footer /> */}
+      <Footer />
       {/* Optional: External Scripts */}
       {/* <Script src="path-to-your-script.js" strategy="lazyOnload" /> */}
     </>

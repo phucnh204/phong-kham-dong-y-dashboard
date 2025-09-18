@@ -1,225 +1,196 @@
 "use client";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import banner_doi_tac from "@/assets/images/banner-doi-tac.png";
-import banner_mau_to_roi_phong_kham from "@/assets/images/banner-mau-to-roi-phong-kham.png";
-import banner_1 from "@/assets/images/banner-1.png";
-import banner_tinh_1 from "@/assets/images/pktmngocanh.png";
-import banner_tinh_2 from "@/assets/images/banner-doi-ngu-bac-si-4.png";
-import bacsi from "@/assets/images/anh-bac-si.png";
-import bapthuoc from "@/assets/images/bap-thuoc-dongy-cach-dung.png";
-import vatly from "@/assets/images/vat-ly-tri-lieu.png";
-import nghiencuu from "@/assets/images/nghien-cuu.png";
-import gg_review from "@/assets/images/gg_review.png";
-import { Star } from "lucide-react";
-
 import {
-  MotionSection,
-  MotionFadeIn,
-  MotionStaggerContainer,
-  MotionItem,
-} from "../MotionWrappers";
+  Phone,
+  Calendar,
+  Shield,
+  Award,
+  Heart,
+  Users,
+  Clock,
+  Stethoscope,
+  Leaf,
+  Star,
+  Gift,
+  Sparkles,
+  Crown,
+} from "lucide-react";
+import { MotionSection, MotionFadeIn, MotionItem } from "../MotionWrappers";
 
 export default function About() {
+  const achievements = [
+    {
+      icon: Users,
+      number: "50,000+",
+      label: "Bệnh nhân đã điều trị",
+      color: "text-blue-600",
+    },
+    {
+      icon: Award,
+      number: "25+",
+      label: "Năm kinh nghiệm",
+      color: "text-amber-600",
+    },
+    {
+      icon: Star,
+      number: "4.9/5",
+      label: "Đánh giá Google",
+      color: "text-yellow-500",
+    },
+    {
+      icon: Shield,
+      number: "100%",
+      label: "An toàn & hiệu quả",
+      color: "text-emerald-600",
+    },
+  ];
+  const features = [
+    {
+      icon: Stethoscope,
+      title: "Chẩn đoán chính xác",
+      desc: "Kết hợp mạch cổ truyền & công nghệ hiện đại",
+    },
+    {
+      icon: Leaf,
+      title: "Thảo dược thiên nhiên",
+      desc: "Nguồn gốc rõ ràng, không tác dụng phụ",
+    },
+    {
+      icon: Heart,
+      title: "Điều trị toàn diện",
+      desc: "Chữa gốc bệnh, tăng cường thể trạng",
+    },
+    {
+      icon: Clock,
+      title: "Hỗ trợ 24/7",
+      desc: "Tư vấn & theo dõi sức khỏe liên tục",
+    },
+  ];
+
   return (
-    <MotionSection
+    <div
       id="about"
-      className="w-full min-h-screen bg-gradient-to-br from-[#e8fdf4] via-white to-white px-0 py-0 flex flex-col items-center justify-start"
-      style={{ fontFamily: "InterVariable, Inter, Arial, sans-serif" }}
+      className="w-full bg-gradient-to-br from-white via-emerald-50 to-green-50 min-h-[100vh] overflow-hidden"
     >
-      {/* BANNER SLIDER + TĨNH */}
-      <MotionFadeIn>
-        <div className="w-full max-w-[1600px] mx-auto mb-4 pt-8 px-2">
-          <div className="grid grid-cols-1 md:grid-cols-12 items-stretch gap-4">
-            {/* SWIPER BANNER */}
-            <div className="col-span-7 relative overflow-hidden rounded-3xl shadow-xl min-h-[280px] md:min-h-[340px] lg:min-h-[420px] xl:min-h-[520px]">
-              <Swiper
-                modules={[Navigation, Pagination, Autoplay]}
-                loop
-                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                pagination={{ clickable: true, el: ".swiper-pagination" }}
-                navigation={{
-                  nextEl: ".swiper-button-next",
-                  prevEl: ".swiper-button-prev",
-                }}
-                slidesPerView={1}
-                spaceBetween={0}
-                className="w-full h-full"
-              >
-                {[banner_mau_to_roi_phong_kham, banner_doi_tac, banner_1].map(
-                  (img, idx) => (
-                    <SwiperSlide key={idx}>
-                      <Image
-                        src={img}
-                        alt={`Banner ${idx + 1}`}
-                        fill
-                        className="object-cover w-full h-full"
-                        sizes="(min-width: 1024px) 65vw, 100vw"
-                        priority={idx === 0}
-                      />
-                    </SwiperSlide>
-                  )
-                )}
-                {/* Pagination & Navigation */}
-                <div className="swiper-pagination absolute bottom-2 left-0 right-0 flex justify-center z-10" />
-                <div className="swiper-button-next text-white text-2xl absolute top-1/2 -translate-y-1/2 right-3 rounded-full p-3 opacity-90 hover:opacity-100 z-10 bg-emerald-500/80 shadow-lg" />
-                <div className="swiper-button-prev text-white text-2xl absolute top-1/2 -translate-y-1/2 left-3 rounded-full p-3 opacity-90 hover:opacity-100 z-10 bg-emerald-500/80 shadow-lg" />
-              </Swiper>
+      <MotionSection
+        className="relative flex items-center justify-center min-h-[60vh] sm:min-h-[70vh] lg:min-h-[90vh] py-10 md:py-16 px-0"
+        style={{ fontFamily: "InterVariable, Inter, Arial, sans-serif" }}
+      >
+        {/* BG */}
+        <div className="pointer-events-none absolute inset-0 z-0">
+          <div className="absolute top-[10%] left-[10%] w-[350px] sm:w-[400px] lg:w-[500px] h-[300px] sm:h-[350px] lg:h-[400px] bg-white/50 blur-3xl rounded-full opacity-40"></div>
+          <div className="absolute bottom-[-8%] right-[5%] w-[300px] sm:w-[400px] lg:w-[500px] h-[250px] sm:h-[350px] lg:h-[400px] bg-emerald-100/40 blur-2xl rounded-full opacity-40"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-white/60 to-green-50/40"></div>
+          <div className="absolute top-0 left-0 w-full h-[5px] sm:h-[6px] bg-gradient-to-r from-emerald-400 via-green-300 to-white blur-lg opacity-60"></div>
+        </div>
+
+        {/* MAIN HERO */}
+        <div className="relative z-10 w-full max-w-screen-2xl mx-auto px-3 sm:px-6 md:px-10 lg:px-20 flex flex-col items-center">
+          <MotionFadeIn>
+            {/* HEADING */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 mb-4 sm:mb-6 leading-tight text-center drop-shadow">
+              <span className="block">Chữa lành</span>
+              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-green-400 to-teal-400 animate-gradient-move">
+                Sức khỏe toàn diện
+              </span>
+            </h1>
+            <div className="text-base sm:text-lg md:text-2xl lg:text-3xl text-gray-700 font-light mt-3 flex flex-wrap items-center justify-center gap-2 italic">
+              <Leaf className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-emerald-500" />
+              <span>
+                Tinh hoa y học cổ truyền 5000 năm & công nghệ mới nhất
+              </span>
             </div>
-            {/* 2 Banner Tĩnh */}
-            <MotionStaggerContainer className="col-span-5 flex flex-col gap-4 h-full">
-              {[banner_tinh_2, banner_tinh_1].map((img, i) => (
-                <MotionItem key={i} delay={i * 0.15}>
-                  <div className="relative overflow-hidden rounded-3xl shadow-xl flex-1 min-h-[140px] md:min-h-[180px] xl:min-h-[240px]">
-                    <Image
-                      src={img}
-                      alt={`Right Banner ${i + 1}`}
-                      fill
-                      className="w-full h-full object-cover"
-                      sizes="(min-width: 1024px) 30vw, 100vw"
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl md:max-w-4xl mx-auto mt-8 mb-10 sm:mb-12 leading-relaxed text-center">
+              <span className="font-semibold text-emerald-700">
+                Phòng khám chuẩn quốc tế
+              </span>
+              , cam kết{" "}
+              <span className="text-blue-700 font-semibold">
+                an toàn – hiệu quả – tận tâm
+              </span>{" "}
+              cho mọi khách hàng.
+              <br />
+              Điều trị tận gốc, nâng cao thể trạng, không lo tái phát!
+            </p>
+            {/* CTA */}
+            <div className=" flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-10 sm:mb-14 w-full">
+              <a
+                href="tel:0989861548"
+                className="group inline-flex items-center gap-3 sm:gap-4 px-6 py-3 sm:px-10 sm:py-5 bg-gradient-to-r from-emerald-600 via-emerald-400 to-green-500 text-white font-extrabold text-base sm:text-xl rounded-full shadow-2xl hover:scale-105 hover:shadow-emerald-500/25 transition-all duration-300 border-2 border-emerald-200 w-full sm:w-auto justify-center"
+              >
+                <Phone className="w-5 h-5 sm:w-7 sm:h-7 animate-pulse" />
+                Hotline: 0989.861.548
+                <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300 animate-bounce" />
+              </a>
+              <a
+                href="/dat-lich"
+                className="inline-flex items-center gap-3 sm:gap-4 px-6 py-3 sm:px-10 sm:py-5 bg-white text-emerald-700 font-extrabold text-base sm:text-xl rounded-full border-2 border-emerald-200 hover:border-emerald-400 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-green-50 transition-all duration-300 shadow-xl w-full sm:w-auto justify-center"
+              >
+                <Calendar className="w-5 h-5 sm:w-7 sm:h-7" />
+                Đặt lịch ngay
+                <span className="text-xs sm:text-base bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full ml-2 shadow">
+                  Miễn phí
+                </span>
+              </a>
+            </div>
+
+            {/* ACHIEVEMENTS: ANIMATION + GLASS CARD */}
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 w-full max-w-screen-xl mx-auto mb-6 sm:mb-10">
+              {achievements.map((item, index) => (
+                <MotionItem key={index} delay={index * 0.13}>
+                  <div className="group bg-white/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 lg:p-8 shadow-xl hover:shadow-emerald-200 border border-gray-100 flex flex-col items-center transition-all duration-300 hover:scale-105 relative overflow-hidden">
+                    <item.icon
+                      className={`w-7 h-7 sm:w-10 sm:h-10 ${item.color} mb-2 drop-shadow`}
                     />
+                    <div className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight group-hover:text-emerald-600 transition">
+                      {item.number}
+                    </div>
+                    <div className="text-xs sm:text-base text-gray-500 font-semibold mt-1 text-center">
+                      {item.label}
+                    </div>
+                    <Sparkles className="absolute top-3 right-3 w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 opacity-60 animate-spin" />
                   </div>
                 </MotionItem>
               ))}
-            </MotionStaggerContainer>
-          </div>
-        </div>
-      </MotionFadeIn>
+            </div>
 
-      {/* SECTION GIỚI THIỆU + GIÁ TRỊ + DỊCH VỤ + FEEDBACK */}
-      <div className="w-full max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-20 px-2 md:px-10 py-8 md:py-16">
-        {/* LEFT: GIỚI THIỆU + CTA + FEEDBACK */}
-        <MotionFadeIn className="flex-1 flex flex-col justify-center items-start max-w-[540px] w-full">
-          <h1 className="text-4xl md:text-5xl font-black text-green-800 mb-4 leading-tight tracking-tighter drop-shadow-md">
-            Đông Y Cần Thơ
-            <br />
-            <span className="text-emerald-700">
-              An toàn, hiệu quả, <br /> phục hồi tối ưu
-            </span>
-          </h1>
-          <div className="text-green-900 text-lg font-semibold mb-3">
-            Kết hợp tinh hoa y học cổ truyền & công nghệ hiện đại.
-          </div>
-          <div className="text-gray-700 text-base mb-4">
-            Giải pháp toàn diện, bác sĩ chuyên môn cao, thiết bị chuẩn quốc tế.
-          </div>
-          <ul className="text-emerald-800 text-base space-y-2 mb-6 font-medium">
-            <li>✓ Chẩn đoán & điều trị cá nhân hóa</li>
-            <li>✓ Hồi phục nhanh, cam kết kết quả</li>
-            <li>✓ Hoàn tiền nếu không hài lòng*</li>
-          </ul>
-          <div className="flex gap-4 mb-4 w-full">
-            <a
-              href="tel:0989861548"
-              className="flex-1 py-4 rounded-full bg-gradient-to-r from-emerald-600 to-green-400 text-white font-bold text-lg shadow-xl hover:scale-105 transition text-center"
-            >
-              Gọi tư vấn miễn phí
-            </a>
-            <a
-              href="/dat-lich"
-              className="flex-1 py-4 rounded-full bg-white border-2 border-emerald-400 text-emerald-700 font-bold text-lg shadow hover:bg-green-50 transition text-center"
-            >
-              Đặt lịch khám
-            </a>
-          </div>
-          <div className="text-xs text-gray-400 mt-1">
-            *Hoàn tiền 100% nếu không hài lòng (áp dụng điều kiện)
-          </div>
-          {/* Feedback thực tế */}
-          <MotionFadeIn className="mt-6">
-            <div className="flex items-center gap-4 px-6 py-4 bg-white/95 rounded-2xl shadow-lg">
-              <span className="text-emerald-600 font-extrabold text-2xl flex gap-x-2 items-center">
-                4.9/5
-                <Star className="text-yellow-500 fill-yellow-400 w-8 h-8 animate-pulse" />
-              </span>
-              <span className="text-gray-700 font-bold text-base">
-                | 1.200+ đánh giá thực tế
-              </span>
-              <Image
-                src={gg_review}
-                alt="Google Review"
-                width={84}
-                height={28}
-                className="ml-3 rounded-full shadow"
-              />
+            {/* FEATURES: FLOATING CARD, BLUR BG */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 w-full max-w-screen-xl mx-auto">
+              {features.map((item, i) => (
+                <MotionItem key={i} delay={i * 0.16}>
+                  <div className="flex flex-col items-center gap-2 md:gap-4 bg-gradient-to-b from-emerald-50 via-white/80 to-green-50/80 rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg border-2 border-emerald-100 hover:shadow-emerald-200 hover:scale-105 transition relative overflow-hidden">
+                    <item.icon className="w-7 h-7 sm:w-10 sm:h-10 text-emerald-600 flex-shrink-0 drop-shadow" />
+                    <div className="font-bold text-emerald-900 text-base sm:text-xl text-center">
+                      {item.title}
+                    </div>
+                    <div className="text-xs sm:text-base text-gray-600 text-center">
+                      {item.desc}
+                    </div>
+                    <div className="absolute -top-3 -right-3 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-emerald-200/50 blur-2xl opacity-50"></div>
+                  </div>
+                </MotionItem>
+              ))}
             </div>
           </MotionFadeIn>
-        </MotionFadeIn>
-        {/* RIGHT: GRID GIÁ TRỊ + DỊCH VỤ */}
-        <div className="flex-1 flex flex-col gap-8 items-center w-full">
-          {/* Giá trị nổi bật */}
-          <MotionStaggerContainer className="grid grid-cols-2 sm:grid-cols-4 gap-6 w-full">
-            {[
-              {
-                img: bacsi,
-                title: "Bác sĩ chuyên sâu",
-                desc: "Chứng chỉ, kinh nghiệm, tận tâm.",
-              },
-              {
-                img: bapthuoc,
-                title: "Bài thuốc chọn lọc",
-                desc: "Gia truyền, nghiên cứu mới.",
-              },
-              {
-                img: vatly,
-                title: "Trị liệu không dùng thuốc",
-                desc: "Châm cứu, bấm huyệt, phục hồi.",
-              },
-              {
-                img: nghiencuu,
-                title: "Ứng dụng khoa học",
-                desc: "Cập nhật phác đồ quốc tế.",
-              },
-            ].map((item, idx) => (
-              <MotionItem key={item.title} delay={0.08 * idx}>
-                <div className="bg-white p-6 rounded-2xl border border-green-100 shadow-xl flex flex-col items-center text-center hover:shadow-2xl transition min-h-[160px]">
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    width={58}
-                    height={58}
-                    className="mb-3 mx-auto"
-                  />
-                  <div className="font-bold text-emerald-700 text-lg mb-1">
-                    {item.title}
-                  </div>
-                  <div className="text-gray-700 text-sm">{item.desc}</div>
-                </div>
-              </MotionItem>
-            ))}
-          </MotionStaggerContainer>
-          {/* Dịch vụ nổi bật */}
-          <MotionStaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full mt-2">
-            {[
-              {
-                title: "Khám & điều trị chuyên khoa",
-                desc: "Nội khoa, cơ xương khớp, thần kinh, tiêu hóa, mất ngủ...",
-              },
-              {
-                title: "Châm cứu, bấm huyệt, thủy châm",
-                desc: "Phục hồi chức năng, giảm đau, phòng bệnh mãn tính.",
-              },
-              {
-                title: "Thảo dược & dưỡng sinh",
-                desc: "Bài thuốc gia truyền, trà dưỡng sinh, chăm sóc sức khỏe.",
-              },
-            ].map((item, idx) => (
-              <MotionItem key={item.title} delay={0.09 * idx}>
-                <div className="bg-green-50 p-6 rounded-2xl border border-green-100 shadow-md flex flex-col items-center text-center hover:shadow-xl transition min-h-[130px]">
-                  <div className="font-bold text-emerald-800 mb-2 text-lg">
-                    {item.title}
-                  </div>
-                  <div className="text-green-800 text-base">{item.desc}</div>
-                </div>
-              </MotionItem>
-            ))}
-          </MotionStaggerContainer>
         </div>
-      </div>
-    </MotionSection>
+      </MotionSection>
+      {/* Gradient heading animation */}
+      <style jsx global>{`
+        .animate-gradient-move {
+          background-size: 200% 200%;
+          animation: gradientMove 3s ease-in-out infinite;
+        }
+        @keyframes gradientMove {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
+    </div>
   );
 }

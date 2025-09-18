@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Phone, CalendarCheck, Star } from "lucide-react";
+import { Phone, CalendarCheck, Star, Gift, Calendar } from "lucide-react";
 import anh_hero from "@/assets/images/anh-bac-si-11.png";
 import anh_hero_bg from "@/assets/images/anh-bac-si-hero-bg.png";
 import gg_review from "@/assets/images/gg_review.png";
@@ -60,8 +60,8 @@ export default function HeroSection() {
             </p>
           </MotionItem>
           <MotionItem>
-            <div className="mt-7 flex flex-wrap gap-4">
-              <a
+            <div className="mt-7 flex flex-wrap  gap-4 justify-center">
+              {/* <a
                 href="tel:0989861548"
                 className="flex items-center gap-2 px-8 py-3 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-400 text-white font-extrabold text-base shadow-xl hover:scale-105 transition-all duration-200"
                 aria-label="Gọi ngay"
@@ -73,7 +73,21 @@ export default function HeroSection() {
                 className="flex items-center gap-2 px-8 py-3 rounded-2xl bg-white border border-green-400 text-green-700 font-extrabold text-base shadow-md hover:bg-green-50 transition-all duration-200"
                 aria-label="Đặt lịch khám"
               >
-                <CalendarCheck className="w-5 h-5" /> Đặt lịch khám
+                <CalenarCheck className="w-5 h-5" /> Đặt lịch khám
+              </a> */}
+              <a
+                href="tel:0989861548"
+                className="group inline-flex items-center gap-4 px-12 py-5 bg-gradient-to-r from-emerald-600 via-emerald-400 to-green-500 text-white font-extrabold text-xl rounded-full shadow-2xl hover:scale-105 hover:shadow-emerald-500/25 transition-all duration-300 border-2 border-emerald-200"
+              >
+                <Phone className="w-7 h-7 animate-pulse" />
+                0989.861.548
+              </a>
+              <a
+                href="/dat-lich"
+                className="inline-flex items-center gap-4 px-12 py-5 bg-white text-emerald-700 font-extrabold text-xl rounded-full border-2 border-emerald-200 hover:border-emerald-400 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-green-50 transition-all duration-300 shadow-xl"
+              >
+                <Calendar className="w-7 h-7" />
+                Đặt lịch
               </a>
             </div>
           </MotionItem>
