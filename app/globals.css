@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "aos/dist/aos.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -110,4 +111,10 @@
   --sidebar-accent-foreground: oklch(0.99 0 0);
   --sidebar-border: oklch(0.3 0.05 150);
   --sidebar-ring: oklch(0.7 0.2 150);
+}
+
+.nav-link.active {
+  color: #fff !important;
+  font-weight: 700;
+  background-color: #22c55e !important;
 }
