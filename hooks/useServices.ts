@@ -1,6 +1,6 @@
 "use client";
 
-import { fetcher } from "@/lib/utils";
+import { fetcher } from "@/app/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 
 export interface Service {

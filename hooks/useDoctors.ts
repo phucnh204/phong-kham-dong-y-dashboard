@@ -1,7 +1,7 @@
 "use client";
 
+import { fetcher } from "@/app/utils/utils";
 import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "@/lib/utils";
 
 export type Doctor = {
   id: number;

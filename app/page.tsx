@@ -7,6 +7,9 @@ import Hero from "@/components/clientLayouts/Hero";
 import BannerSection from "@/components/clientLayouts/BannerSection";
 import About from "@/components/clientLayouts/About";
 import ServiceGrid from "@/components/clientLayouts/ServiceGrid";
+import InfoSection from "@/components/clientLayouts/InfoSection";
+import CertificateSection from "@/components/clientLayouts/CertificateSection";
+import CardDoctorGrid from "@/components/clientLayouts/CardDoctorGrid";
 
 export const metadata = {
   title: "Phòng Khám Đông Y Cần Thơ",
@@ -28,6 +31,9 @@ export default function RootLayout({
       <Hero />
       <About />
       <ServiceGrid />
+      <CardDoctorGrid />
+      <InfoSection />
+      <CertificateSection />
       {/* <BannerSection /> */}
       {/* Main content area */}
       <main>{children}</main>

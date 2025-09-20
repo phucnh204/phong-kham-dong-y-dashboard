@@ -1,11 +1,12 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { login } from "@/lib/auth";
-import { useState } from "react";
+import { login } from "@/app/utils/auth";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Cookies from "js-cookie";
 import {
   Card,
   CardContent,
@@ -14,16 +15,22 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { AuthContext, useAuth } from "@/app/context/AuthContext";
 
 export function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-
+  const { user, setUser } = useAuth();
   const loginMutation = useMutation({
     mutationFn: () => login(username, password),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setUser(data.user); // context
+      Cookies.set("user", JSON.stringify(data.user), { expires: 1 });
+      // console.log("Đăng nhập thành công" + data.user);
+      // console.log("DATA trả về khi login:", data);
+      // alert;
       router.push("/admin/dashboard");
     },
     onError: (error: any) => {

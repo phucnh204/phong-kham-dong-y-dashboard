@@ -20,10 +20,10 @@ import {
   IconHelp,
 } from "@tabler/icons-react";
 
-import { NavDocuments } from "@/components/nav-documents";
+// import { NavDocuments } from "@/components/nav-documents";
 import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+// import { NavSecondary } from "@/components/nav-secondary";
+// import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -172,7 +172,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="/dashboard">
+              <a href="/admin/dashboard">
                 {/* Updated from "#" to dashboard route */}
 
                 {/* <IconLeaf className="!size-5 text-primary" /> */}
@@ -187,11 +187,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         {/* <NavDocuments items={data.navClouds} /> */}
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      {/* <SidebarFooter><NavUser user={data.user} /></SidebarFooter> */}
     </Sidebar>
   );
 }

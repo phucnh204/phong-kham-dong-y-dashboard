@@ -42,6 +42,7 @@ const MENU_ITEMS = [
     href: "#blog",
     icon: Newspaper,
     label: { vi: "Bài viết", en: "Blog" },
+    comingSoon: true,
   },
   {
     href: "#footer",
@@ -51,9 +52,9 @@ const MENU_ITEMS = [
 ];
 
 const SUBMENU = [
-  { href: "#new", label: { vi: "Tin tức", en: "News" } },
+  // { href: "#new", label: { vi: "Tin tức", en: "News" } },
   { href: "#blog", label: { vi: "Bài viết", en: "Articles" } },
-  { href: "#booking", label: { vi: "Đặt lịch", en: "Booking" } },
+  { href: "dat-lich", label: { vi: "Đặt lịch", en: "Booking" } },
   // { href: "#", label: { vi: "Tư vấn", en: "Consultation" } },
 ];
 
@@ -142,8 +143,17 @@ export default function Navbar() {
   }, []);
 
   // Lock scroll when menu open
+  // useEffect(() => {
+  //   document.body.style.overflow = menuOpen ? "hidden" : "";
+  // }, [menuOpen]);
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
@@ -220,7 +230,7 @@ export default function Navbar() {
       {/* NAVBAR luxury */}
       <nav
         ref={navRef}
-        className="relative w-full z-[100] bg-white/80 backdrop-blur-xl  shadow transition-all duration-300 font-inter"
+        className="relative w-full z-[100] bg-white shadow font-inter"
         aria-label="Main navigation"
       >
         <div className="mx-auto flex items-center justify-between px-4 lg:px-10 py-3 min-h-[70px] max-w-7xl">
@@ -240,31 +250,44 @@ export default function Navbar() {
           </div>
           {/* Desktop Menu */}
           <ul className="hidden lg:flex items-center gap-3">
-            {MENU_ITEMS.map(({ href, icon: Icon, label }) => (
+            {MENU_ITEMS.map(({ href, icon: Icon, label, comingSoon }) => (
               <li key={href} className="relative">
                 <motion.a
-                  href={href}
+                  href={comingSoon ? "#" : href}
                   className={`
-                    flex flex-col items-center px-5 py-2.5 rounded-full font-semibold text-green-700 transition
-                    hover:bg-gradient-to-tr hover:from-green-50 hover:to-green-200 hover:text-green-900 hover:scale-[1.06] hover:shadow
-                    ${
-                      active === href.replace("#", "")
-                        ? "bg-gradient-to-br from-green-500  to-green-200 text-white shadow-2xl font-bold scale-[1.09] border-2 border-green-300"
-                        : ""
-                    }
-                  `}
+        flex flex-col items-center px-5 py-2.5 rounded-full font-semibold text-green-700 transition
+        hover:bg-gradient-to-tr hover:from-green-50 hover:to-green-200 hover:text-green-900 hover:scale-[1.06] hover:shadow
+        ${
+          active === href.replace("#", "")
+            ? "bg-gradient-to-br from-green-500  to-green-200 text-white shadow-2xl font-bold scale-[1.09] border-2 border-green-300"
+            : ""
+        }
+        ${comingSoon ? "opacity-60 cursor-not-allowed" : ""}
+      `}
                   style={{ fontSize: "1.08rem", letterSpacing: 0.12 }}
-                  onClick={handleNavClick(href)}
+                  onClick={
+                    comingSoon
+                      ? (e) => e.preventDefault()
+                      : handleNavClick(href)
+                  }
                   whileHover={{ scale: 1.07 }}
                   transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                  aria-disabled={comingSoon}
+                  tabIndex={comingSoon ? -1 : 0}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 relative">
                     <Icon className="w-5 h-5" />
                     <span>{label[lang]}</span>
+                    {comingSoon && (
+                      <span className="absolute ml-1 px-1 left-20 bottom-5 py-0.5 text-xs rounded-full bg-yellow-300 text-yellow-900 font-bold  shadow-sm select-none animate-pulse">
+                        {lang === "vi" ? "Sắp " : "Soon"}
+                      </span>
+                    )}
                   </div>
                 </motion.a>
               </li>
             ))}
+
             {/* Submenu */}
             <li className="relative group">
               <a
@@ -324,7 +347,7 @@ export default function Navbar() {
           {menuOpen && (
             <motion.div
               key="mobile-menu-overlay"
-              className="fixed inset-0 bg-black/40 z-[110] lg:hidden"
+              className="fixed inset-0 bg-black/40 z-[2000] lg:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -333,16 +356,18 @@ export default function Navbar() {
               <motion.div
                 key="mobile-menu"
                 className="
-                  absolute top-0 right-0 w-[84vw] max-w-[370px] h-full bg-white/98 shadow-2xl flex flex-col
-                  rounded-l-3xl border-l border-green-100
-                "
+    fixed top-0 right-0 w-[84vw] max-w-[370px] h-full bg-white/98 shadow-2xl flex flex-col
+    rounded-l-3xl border-l border-green-100 z-[2010]
+  "
                 initial={{ x: 400 }}
                 animate={{ x: 0 }}
                 exit={{ x: 400 }}
                 transition={{ type: "spring", stiffness: 240, damping: 25 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex items-center justify-between px-7 py-5 border-b border-green-50">
+                {/* HEADER (Logo + Close) */}
+                <div className="flex items-center justify-between px-7 py-5 border-b border-green-50 shrink-0">
+                  {/* Logo */}
                   <div className="flex items-center gap-3 select-none">
                     <Image
                       alt="Logo"
@@ -352,10 +377,11 @@ export default function Navbar() {
                       height={40}
                       priority
                     />
-                    <span className="font-bold text-green-700 text-lg">
+                    <span className="font-bold text-green-700 text-lg whitespace-nowrap">
                       PHÒNG KHÁM ĐÔNG Y
                     </span>
                   </div>
+                  {/* Close */}
                   <button
                     className="flex items-center justify-center rounded-full bg-green-50 h-11 w-11 shadow hover:bg-green-100 active:scale-95 transition"
                     onClick={closeMenu}
@@ -372,83 +398,28 @@ export default function Navbar() {
                     </svg>
                   </button>
                 </div>
-                <div className="flex-1 flex flex-col gap-1 px-6 py-7">
+                {/* NAVIGATION */}
+                <div className="flex-1 flex flex-col gap-1 px-6 py-7 ">
                   {MENU_ITEMS.map(({ href, icon: Icon, label }) => (
                     <a
                       key={href}
                       href={href}
                       className={`
-                        flex items-center gap-3 px-3 py-4 rounded-2xl text-green-900 font-semibold text-lg
-                        hover:bg-green-100 transition
-                        ${
-                          active === href.replace("#", "")
-                            ? "bg-gradient-to-r from-green-400 via-teal-300 to-green-200 text-white font-bold shadow"
-                            : ""
-                        }
-                      `}
+                flex items-center gap-3 px-3 py-4 rounded-2xl text-green-900 font-semibold text-lg
+                hover:bg-green-100 transition
+                ${
+                  active === href.replace("#", "")
+                    ? "bg-gradient-to-r from-green-400 via-teal-300 to-green-200 text-white font-bold shadow"
+                    : ""
+                }
+              `}
                       onClick={handleNavClick(href)}
                     >
                       <Icon className="w-6 h-6" />
-                      <span>
-                        {label[lang]}
-                        <span className="block text-xs text-green-700 font-normal">
-                          {lang === "vi" ? label.en : label.vi}
-                        </span>
-                      </span>
-                    </a>
-                  ))}
-                  <div className="my-2 border-b border-green-100" />
-                  {SUBMENU.map(({ href, label }) => (
-                    <a
-                      key={href}
-                      href={href}
-                      className="flex items-center gap-3 px-3 py-4 rounded-2xl text-gray-700 font-semibold text-lg hover:bg-green-100 transition"
-                    >
                       <span>{label[lang]}</span>
-                      <span className="block text-xs text-green-500">
-                        {lang === "vi" ? label.en : label.vi}
-                      </span>
                     </a>
                   ))}
-                  <div className="mt-7">
-                    <button
-                      className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-200 bg-white hover:bg-green-50 shadow transition text-green-900 font-bold"
-                      onClick={() => setShowLang(!showLang)}
-                    >
-                      <Globe className="w-5 h-5 text-green-500" />
-                      {lang === "vi" ? "Tiếng Việt" : "English"}
-                      <ChevronDown className="w-4 h-4" />
-                    </button>
-                    {/* Dropdown lang mobile */}
-                    <AnimatePresence>
-                      {showLang && (
-                        <motion.ul
-                          className="mt-2 rounded-xl shadow bg-white border border-green-100"
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 8 }}
-                        >
-                          {LANGUAGES.map((l) => (
-                            <li key={l.code}>
-                              <button
-                                className={`w-full px-4 py-2 text-left text-green-900 hover:bg-green-100 ${
-                                  lang === l.code
-                                    ? "font-bold text-green-700"
-                                    : ""
-                                }`}
-                                onClick={() => {
-                                  setLang(l.code as "vi" | "en");
-                                  setShowLang(false);
-                                }}
-                              >
-                                {l.name}
-                              </button>
-                            </li>
-                          ))}
-                        </motion.ul>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                  {/* Lang select + hotline nếu muốn */}
                 </div>
               </motion.div>
             </motion.div>
