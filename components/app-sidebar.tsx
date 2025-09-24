@@ -38,11 +38,6 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 // import { UserCircle } from "lucide-react";
 
 const data = {
-  // user: {
-  //   name: "Bác sĩ Nguyễn Hữu Púc",
-  //   email: "bacsi@phongkhamdongycantho.vn",
-  //   avatar: "/avatars/doctor.jpg",
-  // },
   navMain: [
     {
       title: "Tổng quan",
@@ -76,93 +71,6 @@ const data = {
       icon: IconChartBar,
     },
   ],
-  navClouds: [
-    {
-      title: "Thuốc đông y",
-      icon: IconLeaf,
-      isActive: true,
-      url: "/medicine", // Updated from "#" to medicine page route
-      items: [
-        {
-          title: "Kho thuốcdfvbfgbf",
-          url: "/medicine/inventory", // Updated from "#" to medicine inventory route
-        },
-        {
-          title: "Đơn thuốc",
-          url: "/medicine/prescriptions", // Updated from "#" to prescriptions route
-        },
-      ],
-    },
-    {
-      title: "Điều trị",
-      icon: IconHeart,
-      url: "/treatment", // Updated from "#" to treatment page route
-      items: [
-        {
-          title: "Phương pháp",
-          url: "/treatment/methods", // Updated from "#" to treatment methods route
-        },
-        {
-          title: "Liệu trình",
-          url: "/treatment/courses", // Updated from "#" to treatment courses route
-        },
-      ],
-    },
-    {
-      title: "Xét nghiệm",
-      icon: IconFlask,
-      url: "/tests", // Updated from "#" to tests page route
-      items: [
-        {
-          title: "Kết quả",
-          url: "/tests/results", // Updated from "#" to test results route
-        },
-        {
-          title: "Lịch sử",
-          url: "/tests/history", // Updated from "#" to test history route
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Cài đặt",
-      url: "/settings", // Updated from "#" to settings page route
-      icon: IconSettings,
-    },
-    {
-      title: "Trợ giúp",
-      url: "/help", // Updated from "#" to help page route
-      icon: IconHelp,
-    },
-    // {
-    //   title: "Tìm kiếm",
-    //   url: "/search", // Updated from "#" to search page route
-    //   icon: IconSearch,
-    // },
-  ],
-  // documents: [
-  //   {
-  //     name: "Hồ sơ bệnh án",
-  //     url: "/records", // Updated from "#" to medical records route
-  //     icon: IconNotes,
-  //   },
-  //   {
-  //     name: "Báo cáo y tế",
-  //     url: "/reports/medical", // Updated from "#" to medical reports route
-  //     icon: IconReport,
-  //   },
-  //   {
-  //     name: "Kho thuốc",
-  //     url: "/medicine/inventory", // Updated from "#" to medicine inventory route
-  //     icon: IconMedicineSyrup,
-  //   },
-  //   {
-  //     name: "Đơn thuốc",
-  //     url: "/medicine/prescriptions", // Updated from "#" to prescriptions route
-  //     icon: IconPill,
-  //   },
-  // ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
