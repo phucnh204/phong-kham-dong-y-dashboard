@@ -29,25 +29,28 @@ export function NavMain({
       <SidebarGroupContent className="flex flex-col gap-1 px-2 py-2">
         <SidebarMenu>
           {items.map((item) => {
+            let cleanUrl = item.url.startsWith("/") ? item.url : "/" + item.url;
+            const fullUrl = "/admin" + cleanUrl;
+
             const isActive =
-              pathname === item.url ||
-              (item.url !== "/" && pathname.startsWith(item.url));
+              pathname === fullUrl || pathname.startsWith(fullUrl + "/");
+
             const IconComp = item.icon;
 
             return (
               <SidebarMenuItem key={item.title} className="group">
                 <SidebarMenuButton
-                  href={`/admin/${item.url}`}
+                  href={fullUrl}
                   tooltip={item.title}
                   isActive={isActive}
                   aria-label={item.title}
                   className={clsx(
-                    `relative flex items-center gap-3 w-full px-4 py-3 rounded-xl
-                    font-medium transition-all duration-200
-                    focus:outline-none focus:ring-2 focus:ring-primary/50 select-none group
-                    `,
+                    ` flex items-center gap-3 w-full px-4 py-5 rounded-md shadow
+            font-medium transition-all duration-200 text-green-200
+            focus:outline-none focus:ring-2 focus:ring-primary/50 select-none group
+          `,
                     isActive
-                      ? "bg-gradient-to-r from-primary/10 to-sky-100/20 dark:from-primary/20 dark:to-slate-800 text-primary shadow-lg"
+                      ? "bg-gradient-to-r  text-white shadow-lg"
                       : "hover:bg-primary/5 hover:text-primary/95 text-muted-foreground"
                   )}
                   style={{
@@ -102,24 +105,6 @@ export function NavMain({
                       >
                         {item.badge}
                       </motion.span>
-                    )}
-                  </AnimatePresence>
-                  {/* Hiệu ứng underline gradient khi active */}
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.div
-                        layoutId="sidebar-underline"
-                        className="absolute left-6 right-6 bottom-2 h-1 rounded-full bg-gradient-to-r from-primary/60 to-sky-400/80 shadow"
-                        initial={{ opacity: 0, scaleX: 0.8 }}
-                        animate={{ opacity: 1, scaleX: 1 }}
-                        exit={{ opacity: 0, scaleX: 0.5 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 26,
-                        }}
-                        style={{ zIndex: 1 }}
-                      />
                     )}
                   </AnimatePresence>
                 </SidebarMenuButton>

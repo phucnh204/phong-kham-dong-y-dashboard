@@ -13,13 +13,15 @@ import { Calendar, Clock, Phone, Mail, User, Plus } from "lucide-react";
 import { useBookings } from "@/hooks/useBookings";
 import { PaginationControls } from "@/components/PaginationControls";
 import React from "react";
+import { AddBookingModal } from "@/components/Modal/Booking/AddBookingModal";
+import { getStatusBadge } from "@/app/utils/status";
 
 export default function AppointmentsPage() {
-  const { data: bookings = [], isLoading, isError } = useBookings();
+  const { data: bookings = [], isLoading, isError, refetch } = useBookings();
 
   // Pagination State
   const [page, setPage] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageSize, setPageSize] = React.useState(9);
 
   const totalItems = bookings.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
@@ -34,45 +36,45 @@ export default function AppointmentsPage() {
     const start = (page - 1) * pageSize;
     return bookings.slice(start, start + pageSize);
   }, [bookings, page, pageSize]);
+const STATUS_OPTIONS = [
+  { value: "cho_xu_ly", label: "Chờ xử lý" },
+  { value: "da_hoan_thanh", label: "Đã hoàn thành" },
+  { value: "da_huy", label: "Đã huỷ" },
+];
 
   return (
-    <div className="space-y-8 px-4 md:px-8 pt-6 bg-gray-50 min-h-screen">
+    <div className="space-y-5 px-4 md:px-8 pt-2  ">
       {/* Top action */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          {/* Có thể bật filter nâng cao ở đây */}
-          <Button className="rounded-full shadow-sm" size="sm">
-            <Plus className="mr-2 w-4 h-4" />
-            Đặt lịch mới
-          </Button>
+        <CardHeader className="px-0">
+          <CardDescription className="mt-1 text-base text-muted-foreground">
+            Tổng cộng:{" "}
+            <span className="font-semibold text-emerald-700">
+              {bookings.length}
+            </span>{" "}
+            lịch hẹn
+          </CardDescription>
+        </CardHeader>
+        <div className="flex items-center gap-2 ">
+          {/* Modal thgeem mới */}
+          {/* <AddBookingModal
+            onSuccess={() => {
+              refetch();
+            }}
+          /> */}
         </div>
       </div>
 
       {/* Header */}
-      <CardHeader className="px-0">
-        <CardTitle className="text-2xl font-bold text-emerald-800 flex items-center gap-2">
-          <span role="img" aria-label="calendar" className="text-2xl">
-            🗓️
-          </span>
-          Tất cả lịch hẹn
-        </CardTitle>
-        <CardDescription className="mt-1 text-base text-muted-foreground">
-          Tổng cộng:{" "}
-          <span className="font-semibold text-emerald-700">
-            {bookings.length}
-          </span>{" "}
-          lịch hẹn
-        </CardDescription>
-      </CardHeader>
 
       {/* Booking Card Grid */}
       <CardContent
         className="
-          grid gap-6
+          grid gap-4
           grid-cols-1
           sm:grid-cols-2
           lg:grid-cols-3
-          2xl:grid-cols-4
+          
           py-2
         "
       >
@@ -93,60 +95,96 @@ export default function AppointmentsPage() {
         )}
 
         {!isLoading &&
-          pagedBookings.map((b) => (
-            <div
-              key={b.id}
-              className="
-                p-5 rounded-2xl bg-white border border-gray-100 
-                shadow-[0_2px_12px_0_rgba(16,185,129,0.07)] transition
-                flex flex-col gap-2 hover:shadow-xl hover:-translate-y-1
-              "
-            >
-              {/* Time + Status */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center text-sm font-bold text-emerald-600">
-                  <Clock className="w-4 h-4 mr-1" />
-                  {b.appointmentTime?.slice(0, 5) || "--:--"}
+          pagedBookings.map((b) => {
+            const { label, color, icon } = getStatusBadge(b.status);
+            const badgeClass = getStatusBadge(b.status);
+            return (
+              <div
+                key={b.id}
+                tabIndex={0}
+                className="
+    group transition
+    bg-white/70 backdrop-blur-sm
+    border border-gray-100
+    shadow-[0_6px_24px_0_rgba(16,185,129,0.08)]
+    rounded-2xl px-8 py-7 flex flex-col gap-4 min-h-[220px]
+    hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025]
+    outline-none focus:ring-2 focus:ring-emerald-400
+  "
+              >
+                {/* Tên & Badge */}
+                <div className="flex items-start justify-between gap-2">
+                  <span
+                    className="text-xl font-extrabold text-gray-900 truncate tracking-tight"
+                    title={b.fullName}
+                  >
+                    {b.fullName || "Không có tên"}
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className={`flex items-center gap-1 text-xs px-3 py-1 rounded-full font-semibold ${color}
+         ${badgeClass} border`}
+                  >
+                    {icon}
+                    {label}
+                  </Badge>
                 </div>
-                <Badge
-                  variant="outline"
-                  className="
-                    text-xs px-2 py-0.5 rounded-full
-                    border-emerald-200 bg-emerald-50 text-emerald-700
-                    font-semibold tracking-wide
-                  "
-                >
-                  Đã đặt
-                </Badge>
+                {/* Ngày & Giờ */}
+                <div className="flex items-center justify-around gap-5 text-base text-gray-600 font-medium">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-emerald-50 rounded-full">
+                      <Calendar className="w-4 h-4 opacity-80" />
+                    </div>
+                    <span>
+                      {b.appointmentDate
+                        ? (() => {
+                            const [y, m, d] = b.appointmentDate.split("-");
+                            return `${d}/${m}/${y}`;
+                          })()
+                        : "--/--/----"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-cyan-50 rounded-full">
+                      <Clock className="w-4 h-4 opacity-80" />
+                    </div>
+                    <span>{b.appointmentTime?.slice(0, 5) || "--:--"}</span>
+                  </div>
+                </div>
+                {/* Liên hệ */}
+                <div className="flex justify-between gap-6 flex-wrap text-gray-500">
+                  <a
+                    href={b.phone ? `tel:${b.phone}` : undefined}
+                    className={`flex items-center gap-2 hover:text-emerald-600 transition ${
+                      !b.phone && "opacity-60 pointer-events-none"
+                    }`}
+                  >
+                    <div className="p-1.5 bg-orange-50 rounded-full">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <span>{b.phone || "Chưa có số"}</span>
+                  </a>
+                  <a
+                    href={b.email ? `mailto:${b.email}` : undefined}
+                    className={`flex items-center gap-2 hover:text-emerald-600 transition ${
+                      !b.email && "opacity-60 pointer-events-none"
+                    }`}
+                  >
+                    <div className="p-1.5 bg-blue-50 rounded-full">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <span className="truncate" title={b.email}>
+                      {b.email || "Chưa có email"}
+                    </span>
+                  </a>
+                </div>
+                {/* Ghi chú */}
+                <div className="mt-auto text-xs text-gray-400 italic line-clamp-2 min-h-[1.5rem]">
+                  {b.message ? ` ${b.message}` : "Không có ghi chú"}
+                </div>
               </div>
-              {/* Patient name */}
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-muted-foreground" />
-                <span className="font-medium text-base text-foreground line-clamp-1">
-                  {b.fullName}
-                </span>
-              </div>
-              {/* Date */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="w-4 h-4" />
-                <span className="font-semibold">{b.appointmentDate}</span>
-              </div>
-              {/* Phone */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Phone className="w-4 h-4" />
-                {b.phone}
-              </div>
-              {/* Email */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Mail className="w-4 h-4" />
-                {b.email}
-              </div>
-              {/* Message */}
-              <div className="text-sm text-gray-600 italic mt-1 line-clamp-2">
-                📌 {b.message || "Không có ghi chú"}
-              </div>
-            </div>
-          ))}
+            );
+          })}
       </CardContent>
 
       {/* Pagination Controls */}

@@ -10,6 +10,7 @@ export interface Booking {
   appointmentTime: string;
   message: string;
   createdAt: string;
+  status: string;
 }
 
 export const useBookings = () =>

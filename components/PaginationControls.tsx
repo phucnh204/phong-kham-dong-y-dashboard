@@ -20,7 +20,7 @@ export function PaginationControls({
   pageSize,
   setPageSize,
   totalItems,
-  pageSizeOptions = [5, 10, 20, 50],
+  pageSizeOptions = [9, 12, 24, 36, 48],
   className = "",
 }: PaginationControlsProps) {
   // Range hiển thị

@@ -27,38 +27,39 @@ import { NavMain } from "@/components/nav-main";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
+  // SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
+// import Image from "next/image";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { UserCircle } from "lucide-react";
+// import { UserCircle } from "lucide-react";
 
 const data = {
-  user: {
-    name: "Bác sĩ Nguyễn Hữu Púc",
-    email: "bacsi@phongkhamdongycantho.vn",
-    avatar: "/avatars/doctor.jpg",
-  },
+  // user: {
+  //   name: "Bác sĩ Nguyễn Hữu Púc",
+  //   email: "bacsi@phongkhamdongycantho.vn",
+  //   avatar: "/avatars/doctor.jpg",
+  // },
   navMain: [
     {
       title: "Tổng quan",
-      url: "dashboard", // Updated from "#" to actual dashboard route
+      url: "dashboard",
       icon: IconDashboard,
+    },
+    {
+      title: "Lịch hẹn",
+      url: "/appointments",
+      icon: IconCalendar,
     },
     {
       title: "Bệnh nhân",
       url: "/patients", // Updated from "#" to patients page route
       icon: IconUserCheck,
     },
-    {
-      title: "Lịch hẹn",
-      url: "/appointments", // Updated from "#" to appointments page route
-      icon: IconCalendar,
-    },
+
     {
       title: "Dịch vụ khám bệnh",
       url: "/services", // Updated from "#" to examination page route
