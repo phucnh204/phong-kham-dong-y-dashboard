@@ -13,8 +13,8 @@ import { Calendar, Clock, Phone, Mail, User, Plus } from "lucide-react";
 import { useBookings } from "@/hooks/useBookings";
 import { PaginationControls } from "@/components/PaginationControls";
 import React from "react";
-import { AddBookingModal } from "@/components/Modal/Booking/AddBookingModal";
 import { getStatusBadge } from "@/app/utils/status";
+import { updateBookingStatus } from "@/app/utils/booking-apis";
 
 export default function AppointmentsPage() {
   const { data: bookings = [], isLoading, isError, refetch } = useBookings();
@@ -36,11 +36,11 @@ export default function AppointmentsPage() {
     const start = (page - 1) * pageSize;
     return bookings.slice(start, start + pageSize);
   }, [bookings, page, pageSize]);
-const STATUS_OPTIONS = [
-  { value: "cho_xu_ly", label: "Chờ xử lý" },
-  { value: "da_hoan_thanh", label: "Đã hoàn thành" },
-  { value: "da_huy", label: "Đã huỷ" },
-];
+  const STATUS_OPTIONS = [
+    { value: "cho_xu_ly", label: "Chờ xử lý" },
+    { value: "da_hoan_thanh", label: "Đã hoàn thành" },
+    { value: "da_huy", label: "Đã huỷ" },
+  ];
 
   return (
     <div className="space-y-5 px-4 md:px-8 pt-2  ">
@@ -128,6 +128,31 @@ const STATUS_OPTIONS = [
                     {icon}
                     {label}
                   </Badge>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs font-medium text-gray-500">
+                      Trạng thái:
+                    </span>
+                    <select
+                      value={b.status}
+                      onChange={async (e) => {
+                        const newStatus = e.target.value;
+                        try {
+                          await updateBookingStatus(b.id, newStatus);
+                          refetch();
+                        } catch (err) {
+                          console.log("Cập nhật trạng thái thất bại!" + err);
+                        }
+                      }}
+                      className="text-xs border rounded px-2 py-1 bg-white"
+                      style={{ minWidth: 120 }}
+                    >
+                      {STATUS_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 {/* Ngày & Giờ */}
                 <div className="flex items-center justify-around gap-5 text-base text-gray-600 font-medium">
