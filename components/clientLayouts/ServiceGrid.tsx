@@ -8,6 +8,7 @@ import {
   MotionSection,
   MotionStaggerContainer,
 } from "../MotionWrappers";
+import { getImageSrc } from "@/app/utils/getImageSrc";
 
 export default function ServiceGrid() {
   const { data, isLoading, error } = useServices();
@@ -25,7 +26,7 @@ export default function ServiceGrid() {
       <div className="text-center text-red-500 py-10">Lỗi tải dịch vụ!</div>
     );
 
-  const services = data || [];
+  const services: Service[] = Array.isArray(data) ? data : data?.data || [];
   const displayed = showAll ? services : services.slice(0, 8);
 
   return (
@@ -58,7 +59,7 @@ export default function ServiceGrid() {
             >
               <div className="relative w-full h-40 rounded-t-2xl overflow-hidden">
                 <Image
-                  src={`/${service.imageUrl}`}
+                  src={getImageSrc(service.imageUrl)}
                   alt={service.serviceName}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"

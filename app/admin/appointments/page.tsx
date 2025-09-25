@@ -54,20 +54,23 @@ export default function AppointmentsPage() {
 
   const STATUS_OPTIONS = [
     { value: "cho_xu_ly", label: "Chờ xử lý" },
+    // { value: "dang_cho", label: "Chờ xác nhận" },
     { value: "da_hoan_thanh", label: "Đã hoàn thành" },
     { value: "da_huy", label: "Đã huỷ" },
   ];
 
   const TABS = [
     { value: "all", label: "Tất cả" },
+    { value: "dang_cho", label: "Chờ xác nhận" },
     { value: "cho_xu_ly", label: "Chờ xử lý" },
     { value: "da_hoan_thanh", label: "Đã hoàn thành" },
     { value: "da_huy", label: "Đã huỷ" },
-  ] as const; // <-- thêm as const
+  ] as const; //
   type TabValue = (typeof TABS)[number]["value"];
   const countByStatus: Record<TabValue, number> = React.useMemo(() => {
     const count: Record<TabValue, number> = {
       all: bookings.length,
+      dang_cho: 0,
       cho_xu_ly: 0,
       da_hoan_thanh: 0,
       da_huy: 0,

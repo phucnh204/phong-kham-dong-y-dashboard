@@ -1,7 +1,6 @@
-"use client";
-
 import { fetcher } from "@/app/utils/utils";
 import { useQuery } from "@tanstack/react-query";
+import qs from "query-string";
 
 export interface Service {
   id: number;
@@ -10,12 +9,28 @@ export interface Service {
   imageUrl: string;
   price: number;
   isActive: boolean;
+  // ... các trường khác nếu có
 }
 
-export function useServices() {
-  return useQuery<Service[]>({
-    queryKey: ["services"],
-    queryFn: () => fetcher("/services"),
+// Thêm generic filter type cho rõ ràng
+type ServiceFilter = {
+  type?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  isActive?: boolean | string;
+  search?: string;
+  page?: number;
+  pageSize?: number;
+};
+
+export function useServices(filters: ServiceFilter = {}) {
+  const queryString = qs.stringify(filters, {
+    skipEmptyString: true,
+    skipNull: true,
+  });
+  return useQuery<{ data: Service[]; total: number }>({
+    queryKey: ["services", filters],
+    queryFn: () => fetcher(`/services${queryString ? "?" + queryString : ""}`),
     staleTime: 1000 * 60 * 5,
   });
 }

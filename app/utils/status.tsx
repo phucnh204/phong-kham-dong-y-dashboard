@@ -2,12 +2,12 @@ import { Loader2, CheckCircle2, Clock, XCircle, Zap } from "lucide-react";
 
 export function getStatusBadge(status: string) {
   switch (status) {
-    // case "dang_cho":
-    //   return {
-    //     label: "Đang chờ",
-    //     color: "border-yellow-200 bg-yellow-50 text-yellow-700",
-    //     icon: <Clock className="w-4 h-4 mr-1 inline" />,
-    //   };
+    case "dang_cho":
+      return {
+        label: "Chờ xác nhận",
+        color: "border-yellow-200 bg-yellow-50 text-yellow-700",
+        icon: <Clock className="w-4 h-4 mr-1 inline" />,
+      };
     case "cho_xu_ly":
       return {
         label: "Chờ xử lý",
@@ -26,11 +26,11 @@ export function getStatusBadge(status: string) {
         color: "border-rose-200 bg-rose-50 text-rose-700",
         icon: <XCircle className="w-4 h-4 mr-1 inline text-rose-600" />,
       };
-    default:
-      return {
-        label: "Không xác định",
-        color: "border-gray-200 bg-gray-50 text-gray-600",
-        icon: <Zap className="w-4 h-4 mr-1 inline" />,
-      };
+    // default:
+    //   return {
+    //     label: "Chờ xác nhận",
+    //     color: "border-gray-200 bg-gray-50 text-gray-600",
+    //     icon: <Zap className="w-4 h-4 mr-1 inline" />,
+    //};
   }
 }

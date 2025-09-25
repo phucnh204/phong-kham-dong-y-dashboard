@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Loader, CheckCircle, AlertCircle, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from "next/navigation";
 
 // Time slot options
@@ -30,7 +30,7 @@ export function DatLichForm({ onSuccess }: { onSuccess?: () => void }) {
     fullName: "",
     phone: "",
     email: "",
-    appointmentDate: today as Date | null, // luôn hiển thị ngày hôm nay!
+    appointmentDate: today as Date | null, // ngày hôm nay
     appointmentTime: "",
     message: "",
     address: "",

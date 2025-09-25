@@ -11,8 +11,8 @@ export async function fetcher<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = Cookies.get("access_token");
-
+  // const token = Cookies.get("access_token");
+  const token = localStorage.getItem("access_token");
   const res = await fetch(`${API_BASE_URL}${endpoint}`, {
     credentials: "include",
     ...options,
