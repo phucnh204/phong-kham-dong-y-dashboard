@@ -7,11 +7,33 @@ export function cn(...inputs: ClassValue[]) {
 
 export const API_BASE_URL = "http://localhost:8080";
 
+// export async function fetcher<T>(
+//   endpoint: string,
+//   options: RequestInit = {}
+// ): Promise<T> {
+//   // const token = Cookies.get("access_token");
+//   const token = localStorage.getItem("access_token");
+//   const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+//     credentials: "include",
+//     ...options,
+//     headers: {
+//       ...(options.headers || {}),
+//       "Content-Type": "application/json",
+//       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+//     },
+//   });
+
+//   if (!res.ok) {
+//     throw new Error(`Lỗi API: ${res.status} ${res.statusText}`);
+//   }
+
+//   return res.json();
+// }
+
 export async function fetcher<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  // const token = Cookies.get("access_token");
   const token = localStorage.getItem("access_token");
   const res = await fetch(`${API_BASE_URL}${endpoint}`, {
     credentials: "include",
@@ -24,7 +46,12 @@ export async function fetcher<T>(
   });
 
   if (!res.ok) {
-    throw new Error(`Lỗi API: ${res.status} ${res.statusText}`);
+    let errorMsg = `Lỗi API: ${res.status} ${res.statusText}`;
+    try {
+      const errorRes = await res.json();
+      errorMsg = errorRes.message || errorMsg;
+    } catch {}
+    throw new Error(errorMsg);
   }
 
   return res.json();

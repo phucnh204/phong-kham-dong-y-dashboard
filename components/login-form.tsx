@@ -28,10 +28,22 @@ export function LoginForm() {
     onSuccess: (data) => {
       setUser(data.user); // context
       Cookies.set("user", JSON.stringify(data.user), { expires: 1 });
-      // console.log("Đăng nhập thành công" + data.user);
-      // console.log("DATA trả về khi login:", data);
-      // alert;
-      router.push("/admin/dashboard");
+
+      // Chuyển hướng theo vai trò
+      const role = data.user?.role;
+      if (role === "admin") {
+        router.push("/admin/dashboard");
+      } else if (role === "doctor") {
+        router.push("/doctor/dashboard");
+      } else if (role === "nurse") {
+        router.push("/nurse/dashboard");
+      } else if (role === "pharmacist") {
+        router.push("/pharma/dashboard");
+      } else if (role === "staff") {
+        router.push("/staff/dashboard");
+      } else {
+        router.push("/not-found");
+      }
     },
     onError: (error: any) => {
       setError(error.message || "Đăng nhập thất bại");

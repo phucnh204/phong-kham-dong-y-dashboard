@@ -16,6 +16,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Loader2, Edit, Image as ImageIcon } from "lucide-react";
 import { uploadImage } from "@/app/utils/uploadImage";
 import { fetcher } from "@/app/utils/utils";
+import { Switch } from "@/components/ui/switch";
 // import { Combobox } from "@/components/ui/combobox"; // Nếu muốn combo đẹp hơn select truyền thống
 // import { uploadImage } from "@/app/utils/uploadImage";
 
@@ -267,7 +268,7 @@ export default function EditServiceModal({
               />
             </div> */}
             {/* Trạng thái hoạt động */}
-            {/* <div className="flex items-center gap-2 mt-2 mb-1">
+            <div className="flex items-center gap-2 mt-2 mb-1">
               <Switch
                 checked={form.isActive}
                 onCheckedChange={(v) => setForm({ ...form, isActive: v })}
@@ -275,7 +276,7 @@ export default function EditServiceModal({
               <Label className="text-base font-semibold">
                 Dịch vụ đang hoạt động
               </Label>
-            </div> */}
+            </div>
             {/* Thông báo lỗi */}
             {error && (
               <div className="text-sm text-red-500 font-semibold mt-1">

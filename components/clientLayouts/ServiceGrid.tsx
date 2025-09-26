@@ -27,7 +27,8 @@ export default function ServiceGrid() {
     );
 
   const services: Service[] = Array.isArray(data) ? data : data?.data || [];
-  const displayed = showAll ? services : services.slice(0, 8);
+  const activeServices = services.filter((s) => s.isActive);
+  const displayed = showAll ? activeServices : activeServices.slice(0, 8);
 
   return (
     <section
@@ -59,7 +60,7 @@ export default function ServiceGrid() {
             >
               <div className="relative w-full h-40 rounded-t-2xl overflow-hidden">
                 <Image
-                  src={getImageSrc(service.imageUrl)}
+                  src={`${getImageSrc(service.imageUrl)}`}
                   alt={service.serviceName}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"

@@ -9,10 +9,10 @@ export interface Service {
   imageUrl: string;
   price: number;
   isActive: boolean;
-  // ... các trường khác nếu có
+  //
 }
 
-// Thêm generic filter type cho rõ ràng
+//
 type ServiceFilter = {
   type?: string;
   minPrice?: number;
