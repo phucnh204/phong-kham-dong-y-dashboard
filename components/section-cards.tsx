@@ -16,27 +16,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import clsx from "clsx";
 
 const overviewData = [
   {
     label: "Tổng số bệnh nhân",
     value: 24,
     loading: false,
-    trend: { icon: IconTrendingUp, value: "", color: "" },
+    trend: { icon: IconTrendingUp, value: "", color: "emerald" },
     icon: IconUserCheck,
-    info: "",
+    info: "Đã khám trong tháng",
     infoColor: "text-emerald-600",
-    sub: "",
+    sub: "Số lượng bệnh nhân mới tăng nhẹ",
   },
   {
     label: "Lịch hẹn khám bệnh",
     value: 156,
     loading: false,
-    trend: { icon: IconTrendingUp, value: " ", color: " " },
+    trend: { icon: IconTrendingUp, value: "+5%", color: "blue" },
     icon: IconCalendar,
-    info: " ",
+    info: "Tăng lịch hẹn",
     infoColor: "text-blue-600",
-    sub: " ",
+    sub: "Tỷ lệ hủy hẹn giảm",
   },
   {
     label: "Doanh thu tháng",
@@ -54,7 +55,7 @@ const overviewData = [
   {
     label: "Thuốc đông y",
     value: "89%",
-    loading: true, // Đang cập nhật
+    loading: true,
     trend: { icon: IconTrendingDown, value: "-5%", color: "rose" },
     icon: IconMedicineSyrup,
     info: "Tồn kho còn đủ",
@@ -66,23 +67,33 @@ const overviewData = [
   },
 ];
 
+const trendColors = {
+  emerald: "bg-emerald-100 text-emerald-700",
+  blue: "bg-blue-100 text-blue-700",
+  yellow: "bg-yellow-100 text-yellow-700",
+  rose: "bg-rose-100 text-rose-700",
+  gray: "bg-gray-100 text-gray-700",
+};
+
 export function SectionCards() {
   return (
     <div
       className="
         grid grid-cols-1 gap-5 px-4 py-2
         sm:grid-cols-2 xl:grid-cols-4
-        *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-emerald-50/80 *:data-[slot=card]:to-white
-        dark:*:data-[slot=card]:from-[#1f2e24]/70 dark:*:data-[slot=card]:to-[#1e2329]
-        *:data-[slot=card]:shadow-md *:data-[slot=card]:border
-        *:data-[slot=card]:hover:-translate-y-1 *:data-[slot=card]:hover:shadow-xl
-        transition-all duration-300
       "
     >
       {overviewData.map((item, idx) => (
-        <Card key={idx} className="group relative overflow-hidden transition">
+        <Card
+          key={idx}
+          className={clsx(
+            "group relative overflow-hidden transition shadow-md border border-gray-100 bg-gradient-to-t from-emerald-50/80 to-white",
+            "hover:-translate-y-1 hover:shadow-xl"
+          )}
+        >
           <CardHeader>
-            <CardDescription className="text-slate-600 dark:text-slate-300">
+            <CardDescription className="text-slate-700 dark:text-slate-300 flex items-center gap-1">
+              <item.icon className="w-5 h-5 text-emerald-500" />
               {item.label}
             </CardDescription>
             <CardTitle className="text-3xl font-bold tabular-nums flex items-center gap-2">
@@ -101,12 +112,11 @@ export function SectionCards() {
             </CardTitle>
             <CardAction>
               <Badge
-                // variant={item.loading ? "outline" : "success"}
-                className={
-                  item.loading
-                    ? `gap-1 text-xs px-2 py-1 bg-${item.trend.color}-50 text-${item.trend.color}-600`
-                    : `gap-1 text-xs px-2 py-1 bg-${item.trend.color}-100 text-${item.trend.color}-700`
-                }
+                className={clsx(
+                  "gap-1 text-xs px-2 py-1",
+                  trendColors[item.trend.color as keyof typeof trendColors] ||
+                    trendColors.gray
+                )}
               >
                 {item.loading ? (
                   <>Đang cập nhật</>
@@ -127,7 +137,10 @@ export function SectionCards() {
             ) : (
               <>
                 <div
-                  className={`flex gap-2 items-center font-medium ${item.infoColor}`}
+                  className={clsx(
+                    "flex gap-2 items-center font-medium",
+                    item.infoColor
+                  )}
                 >
                   <item.icon className="size-4" />
                   {item.info}

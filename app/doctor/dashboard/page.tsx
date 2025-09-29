@@ -1,7 +1,7 @@
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { SectionCards } from "@/components/section-cards";
 
-export default function DashboardPage() {
+export default function DashboardDoctorPage() {
   return (
     <div className="flex flex-col min-h-svh bg-gradient-to-br from-white to-emerald-50/60">
       <div className="w-full  mx-auto flex-1 flex flex-col gap-2">
@@ -22,12 +22,6 @@ export default function DashboardPage() {
             </span>
           </p>
         </header>
-
-        <SectionCards />
-
-        <div className="px-4 lg:px-8 mt-6">
-          <ChartAreaInteractive />
-        </div>
       </div>
     </div>
   );

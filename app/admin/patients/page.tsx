@@ -1,82 +1,201 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Search, Plus, Filter, User, Calendar, Phone } from "lucide-react"
+"use client";
+import { useState } from "react";
+import { usePatients } from "@/hooks/usePatients";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { User, Search, Plus } from "lucide-react";
+import { PaginationControls } from "@/components/PaginationControls";
+import { PatientDetailModal } from "@/components/Modal/Patient/PatientDetailModal";
 
 export default function PatientsPage() {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
+
+  // Các bộ lọc nâng cao
+  const [search, setSearch] = useState("");
+  const [gender, setGender] = useState("");
+  const [dobYear, setDobYear] = useState("");
+  const [address, setAddress] = useState("");
+
+  const [openDetail, setOpenDetail] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const {
+    data: patients,
+    total,
+    loading,
+    error,
+  } = usePatients({
+    page,
+    pageSize,
+    search,
+    gender,
+    dobYear,
+    address,
+  });
+
+  const totalPages = Math.ceil(total / pageSize);
+
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight text-balance">Quản lý Bệnh nhân</h2>
-        <div className="flex items-center space-x-2">
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Thêm bệnh nhân mới
-          </Button>
-        </div>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Tìm kiếm bệnh nhân..." className="pl-8" />
-        </div>
-        <Button variant="outline">
-          <Filter className="mr-2 h-4 w-4" />
-          Lọc
+      <div className="flex items-center justify-between">
+        <h2 className="text-3xl font-bold tracking-tight">Quản lý Bệnh nhân</h2>
+        <Button>
+          <Plus className="mr-2 w-4 h-4" /> Thêm mới
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {[
-          {
-            name: "Nguyễn Văn An",
-            age: 45,
-            phone: "0901234567",
-            lastVisit: "15/12/2024",
-            condition: "Đau lưng mãn tính",
-          },
-          { name: "Trần Thị Bình", age: 38, phone: "0912345678", lastVisit: "14/12/2024", condition: "Mất ngủ" },
-          { name: "Lê Minh Cường", age: 52, phone: "0923456789", lastVisit: "13/12/2024", condition: "Cao huyết áp" },
-          { name: "Phạm Thị Dung", age: 29, phone: "0934567890", lastVisit: "12/12/2024", condition: "Đau đầu" },
-          { name: "Hoàng Văn Em", age: 61, phone: "0945678901", lastVisit: "11/12/2024", condition: "Tiểu đường" },
-          { name: "Vũ Thị Phương", age: 34, phone: "0956789012", lastVisit: "10/12/2024", condition: "Dạ dày" },
-        ].map((patient, index) => (
-          <Card key={index} className="hover:shadow-md transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <User className="mr-2 h-5 w-5 text-primary" />
-                  {patient.name}
-                </CardTitle>
-                <Badge variant="secondary">{patient.age} tuổi</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Phone className="mr-2 h-4 w-4" />
-                {patient.phone}
-              </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Calendar className="mr-2 h-4 w-4" />
-                Khám gần nhất: {patient.lastVisit}
-              </div>
-              <div className="text-sm">
-                <span className="font-medium">Triệu chứng:</span> {patient.condition}
-              </div>
-              <div className="flex space-x-2 pt-2">
-                <Button size="sm" variant="outline" className="flex-1 bg-transparent">
-                  Xem hồ sơ
-                </Button>
-                <Button size="sm" className="flex-1">
-                  Đặt lịch khám
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {/* BỘ LỌC NÂNG CAO */}
+      <div className="flex flex-wrap gap-2 items-end mb-2">
+        <Input
+          placeholder="Tìm tên, SĐT..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          className="w-[180px]"
+        />
+        <select
+          value={gender}
+          onChange={(e) => {
+            setGender(e.target.value);
+            setPage(1);
+          }}
+          className="border px-2 py-1 rounded text-sm"
+        >
+          <option value="">Tất cả giới tính</option>
+          <option value="male">Nam</option>
+          <option value="female">Nữ</option>
+          <option value="other">Khác</option>
+        </select>
+
+        <Input
+          placeholder="Địa chỉ"
+          value={address}
+          onChange={(e) => {
+            setAddress(e.target.value);
+            setPage(1);
+          }}
+          className="w-[150px]"
+        />
+        <Button
+          variant="outline"
+          onClick={() => {
+            setSearch("");
+            setGender("");
+            setDobYear("");
+            setAddress("");
+            setPage(1);
+          }}
+        >
+          Xoá lọc
+        </Button>
       </div>
+
+      {/* Bảng danh sách bệnh nhân */}
+      <Card>
+        <CardContent className="overflow-x-auto p-0">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50 sticky top-0 z-10">
+              <tr>
+                <th className="px-4 py-2 text-left font-medium">#</th>
+                <th className="px-4 py-2 text-left font-medium">Họ tên</th>
+                <th className="px-4 py-2 text-left font-medium">Ngày sinh</th>
+                <th className="px-4 py-2 text-left font-medium">Giới tính</th>
+                <th className="px-4 py-2 text-left font-medium">SĐT</th>
+                <th className="px-4 py-2 text-left font-medium">Email</th>
+                <th className="px-4 py-2 text-left font-medium">Địa chỉ</th>
+                <th className="px-4 py-2 text-left font-medium"></th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {loading ? (
+                <tr>
+                  <td colSpan={8} className="py-6 text-center text-gray-400">
+                    Đang tải dữ liệu...
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan={8} className="py-6 text-center text-red-500">
+                    {error}
+                  </td>
+                </tr>
+              ) : patients.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="py-6 text-center text-gray-500">
+                    Không tìm thấy bệnh nhân nào
+                  </td>
+                </tr>
+              ) : (
+                patients.map((p, idx) => (
+                  <tr
+                    key={p.id}
+                    className="hover:bg-emerald-50 transition border-b last:border-none"
+                  >
+                    <td className="px-4 py-2 text-sm">
+                      {(page - 1) * pageSize + idx + 1}
+                    </td>
+                    <td className="px-4 py-2 text-sm font-semibold flex items-center gap-2">
+                      <User className="w-4 h-4 text-emerald-400" />
+                      {p.fullName}
+                    </td>
+                    <td className="px-4 py-2 text-sm">
+                      {p.dob
+                        ? new Date(p.dob).toLocaleDateString("vi-VN")
+                        : "-"}
+                    </td>
+                    <td className="px-4 py-2 text-sm">
+                      <Badge
+                        variant={p.gender === "male" ? "default" : "secondary"}
+                      >
+                        {p.gender === "male"
+                          ? "Nam"
+                          : p.gender === "female"
+                          ? "Nữ"
+                          : "Khác"}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-2 text-sm">{p.phone || "-"}</td>
+                    <td className="px-4 py-2 text-sm">{p.email || "-"}</td>
+                    <td className="px-4 py-2 text-sm">{p.address || "-"}</td>
+                    <td className="px-4 py-2 text-right">
+                      <Button
+                        onClick={() => {
+                          setSelectedPatient(p);
+                          setOpenDetail(true);
+                        }}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Chi tiết
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </CardContent>
+      </Card>
+
+      {/* Phân trang */}
+      <PaginationControls
+        page={page}
+        totalPages={totalPages}
+        setPage={setPage}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        totalItems={total}
+      />
+
+      <PatientDetailModal
+        open={openDetail}
+        onOpenChange={setOpenDetail}
+        patient={selectedPatient}
+      />
     </div>
-  )
+  );
 }

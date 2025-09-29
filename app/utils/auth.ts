@@ -25,8 +25,12 @@ export async function login(username: string, password: string) {
 }
 
 export async function logout() {
+  // Xóa token ở localStorage
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
+  // Xóa token ở cookie
+  Cookies.remove("access_token");
+  Cookies.remove("refresh_token");
   const res = await fetch("http://localhost:8080/auth/logout", {
     method: "POST",
     credentials: "include",

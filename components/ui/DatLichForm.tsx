@@ -34,6 +34,7 @@ export function DatLichForm({ onSuccess }: { onSuccess?: () => void }) {
     appointmentTime: "",
     message: "",
     address: "",
+    status: "dang_cho",
   });
   const [fieldErrors, setFieldErrors] = useState<{ [k: string]: string }>({});
 
@@ -118,6 +119,7 @@ export function DatLichForm({ onSuccess }: { onSuccess?: () => void }) {
       appointmentTime: "",
       message: "",
       address: "",
+      status: "",
     });
     setFieldErrors({});
     setTimeout(() => {

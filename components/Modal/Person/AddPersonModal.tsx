@@ -53,6 +53,9 @@ export function AddPersonModal({ open, onOpenChange, onSuccess }: any) {
 
     try {
       const res = await fetch("http://localhost:8080/upload", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
         // Chuyển sang route API của bạn, hoặc dùng API_BASE_URL
         method: "POST",
         body: formData,
@@ -75,7 +78,7 @@ export function AddPersonModal({ open, onOpenChange, onSuccess }: any) {
       const payload: any = {
         name: form.name,
         specialization: form.specialization,
-        imageUrl: form.imageUrl?.trim() ? form.imageUrl : null,
+        imageUrl: form.imageUrl?.trim() || "/assets/images/default-avatar.png",
         description: form.description,
         role: form.role,
         isActive: form.isActive, // Nếu có

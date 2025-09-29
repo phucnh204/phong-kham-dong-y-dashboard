@@ -2,7 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/app/utils/auth";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,18 +15,20 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { AuthContext, useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/app/context/AuthContext";
+import { User, Lock } from "lucide-react";
 
 export function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
+
   const loginMutation = useMutation({
     mutationFn: () => login(username, password),
     onSuccess: (data) => {
-      setUser(data.user); // context
+      setUser(data.user);
       Cookies.set("user", JSON.stringify(data.user), { expires: 1 });
 
       // Chuyển hướng theo vai trò
@@ -57,14 +59,24 @@ export function LoginForm() {
   };
 
   return (
-    <div className=" flex items-center justify-center bg-gradient-to-br from-green-50 to-white px-4">
-      <Card className="w-full max-w-md shadow-md border border-gray-200">
-        <CardHeader className="text-center space-y-2">
-          <h1 className="text-2xl font-bold tracking-tight text-green-700">
-            PHÒNG KHÁM ĐÔNG Y
-          </h1>
-          <CardDescription className="text-gray-500">
-            Vui lòng đăng nhập để tiếp tục
+    <div className="flex items-center justify-center  bg-gradient-to-br from-green-50 to-white px-4">
+      <Card className="w-full max-w-xl shadow-lg border border-green-100">
+        <CardHeader className="text-center space-y-2 pb-1">
+          <CardTitle className="text-2xl font-extrabold text-green-700 tracking-tight">
+            PHÒNG KHÁM ĐÔNG Y CẦN THƠ
+          </CardTitle>
+          <div className="text-lg font-medium text-emerald-600">
+            <span className="block">
+              Trải nghiệm sự khác biệt trong chăm sóc sức khỏe!
+            </span>
+          </div>
+          <CardDescription className="text-gray-500 text-sm">
+            Nơi hội tụ đội ngũ chuyên gia hàng đầu và công nghệ y học cổ truyền
+            hiện đại.
+            <br />
+            <span className="text-emerald-700 font-semibold">
+              Đăng nhập để khám phá dịch vụ tận tâm, chuyên nghiệp!
+            </span>
           </CardDescription>
         </CardHeader>
 
@@ -73,9 +85,9 @@ export function LoginForm() {
             <div className="grid gap-2">
               <Label
                 htmlFor="username"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-semibold text-gray-700 flex gap-1 items-center"
               >
-                Tài khoản
+                <User className="w-4 h-4 text-green-700" /> Tài khoản
               </Label>
               <Input
                 id="username"
@@ -84,20 +96,21 @@ export function LoginForm() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 className="focus-visible:ring-green-600"
+                autoComplete="username"
               />
             </div>
 
             <div className="grid gap-2">
               <Label
                 htmlFor="password"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-semibold text-gray-700 flex gap-1 items-center"
               >
-                Mật khẩu
+                <Lock className="w-4 h-4 text-green-700" /> Mật khẩu
               </Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="********"
+                placeholder="Nhập mật khẩu..."
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -106,21 +119,26 @@ export function LoginForm() {
               />
             </div>
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && (
+              <p className="text-sm text-red-600 font-medium">{error}</p>
+            )}
 
             <Button
               type="submit"
               disabled={loginMutation.isPending}
-              className="w-full bg-green-600 hover:bg-green-700"
+              className="w-full bg-green-600 hover:bg-green-700 font-semibold text-base"
             >
-              {loginMutation.isPending ? "Đang đăng nhập..." : "Đăng nhập"}
+              {loginMutation.isPending ? "Đang đăng nhập..." : "Đăng nhập ngay"}
             </Button>
 
             <div className="text-center text-sm text-gray-500 pt-2">
-              Bạn chưa có tài khoản?{" "}
-              <a href="#" className="text-green-700 hover:underline">
-                Đăng ký
-              </a>
+              <span>Bạn chưa có tài khoản? </span>
+              {/* <a
+                href="#"
+                className="text-green-700 font-semibold hover:underline"
+              >
+                Đăng ký miễn phí
+              </a> */}
             </div>
           </form>
         </CardContent>

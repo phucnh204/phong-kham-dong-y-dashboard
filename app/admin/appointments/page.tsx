@@ -25,6 +25,7 @@ import { PaginationControls } from "@/components/PaginationControls";
 import React from "react";
 import { getStatusBadge } from "@/app/utils/status";
 import { updateBookingStatus } from "@/app/utils/booking-apis";
+import { DateFilter } from "@/components/ui/DateFilter";
 
 export default function AppointmentsPage() {
   const { data: bookings = [], isLoading, isError, refetch } = useBookings();
@@ -33,12 +34,22 @@ export default function AppointmentsPage() {
   // Pagination State
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(9);
+  const [dateFilter, setDateFilter] = React.useState<string>("");
 
   // // Reset page nếu đổi pageSize hoặc bookings thay đổi
   const filteredBookings = React.useMemo(() => {
-    if (tab === "all") return bookings;
-    return bookings.filter((b) => b.status === tab);
-  }, [bookings, tab]);
+    let list = bookings;
+
+    if (tab !== "all") {
+      list = list.filter((b) => b.status === tab);
+    }
+
+    if (dateFilter) {
+      list = list.filter((b) => b.appointmentDate === dateFilter);
+    }
+
+    return list;
+  }, [bookings, tab, dateFilter]);
 
   const totalItems = filteredBookings.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
@@ -88,37 +99,30 @@ export default function AppointmentsPage() {
   return (
     <div className="space-y-5 px-4 md:px-8 pt-2  ">
       {/* Top action */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <CardHeader className="px-0">
-          {/* <CardDescription className="mt-1 text-base text-muted-foreground">
-            Tổng cộng:{" "}
-            <span className="font-semibold text-emerald-700">
-              {bookings.length}
-            </span>{" "}
-            lịch hẹn
-          </CardDescription> */}
-        </CardHeader>
-        <div className="flex items-center gap-2 ">
-          {/* Modal thgeem mới */}
-          {/* <AddBookingModal
-            onSuccess={() => {
-              refetch();
-            }}
-          /> */}
-        </div>
-        <div className="flex gap-2 my-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        {/* Bộ lọc bên trái */}
+        <DateFilter
+          dateFilter={dateFilter}
+          setDateFilter={setDateFilter}
+          className="max-w-xs"
+        />
+
+        {/* Tabs trạng thái */}
+        <div className="flex gap-2 flex-wrap">
           {TABS.map((t) => (
             <Button
               key={t.value}
               variant={tab === t.value ? "default" : "outline"}
               size="sm"
               className={
-                tab === t.value ? "shadow text-white bg-emerald-700" : ""
+                tab === t.value
+                  ? "shadow bg-emerald-600 hover:bg-emerald-700 text-white font-semibold"
+                  : "bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50"
               }
               onClick={() => setTab(t.value)}
             >
               {t.label}
-              <span className="ml-1 rounded bg-white/70 text-emerald-700 px-1.5 text-xs font-bold min-w-[22px] text-center">
+              <span className="ml-2 rounded-full bg-emerald-100 text-emerald-700 px-2 py-0.5 text-xs font-bold">
                 {countByStatus[t.value]}
               </span>
             </Button>
@@ -226,7 +230,9 @@ export default function AppointmentsPage() {
                               }
                             }}
                           >
-                            {getStatusBadge(opt.value).icon}
+                            {getStatusBadge(opt.value).icon || (
+                              <Plus className="w-4 h-4 opacity-80" />
+                            )}
                             <span className="ml-2">{opt.label}</span>
                           </DropdownMenuItem>
                         ))}

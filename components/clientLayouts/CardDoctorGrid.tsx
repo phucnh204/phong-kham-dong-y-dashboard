@@ -19,7 +19,7 @@ export default function CardDoctorGrid() {
     experience: doctor.experience || "15+ năm kinh nghiệm",
     phone: doctor.phone || "0989 861 548",
     org: doctor.affiliation || "Phòng khám Đông Y Cần Thơ",
-    degree: doctor.degree || "CKI",
+    // degree: doctor.degree || "CKI",
     field: doctor.specialization || "Đa khoa",
     achievements: doctor.achievements || [],
     // Bullet points: truyền qua API hoặc mock ở đây cho đẹp
@@ -75,19 +75,14 @@ export default function CardDoctorGrid() {
       )}
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-7 px-2 md:px-0 lg:mx-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-2 px-2 md:px-0 lg:mx-6">
         {displayed.map((doctor) => {
           const ext = getExtras(doctor);
           return (
             <div
               key={doctor.id}
-              className="bg-white rounded-3xl shadow-xl border border-emerald-100 hover:shadow-emerald-200 hover:border-emerald-400 hover:scale-[1.037] transition-all duration-300 flex flex-col items-center px-6 py-8 relative overflow-hidden min-h-[440px]"
+              className="bg-white rounded shadow-xl border border-emerald-100 hover:shadow-emerald-200 hover:border-emerald-400 hover:scale-[1.037] transition-all duration-300 flex flex-col items-center px-6 py-8 relative overflow-hidden min-h-[440px]"
             >
-              {/* Badge corner (option) */}
-              <span className="absolute top-5 right-5 bg-green-200 text-green-800 text-xs font-bold rounded-full px-3 py-1 shadow">
-                {ext.degree}
-              </span>
-
               {/* Avatar */}
               <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-emerald-200 shadow-lg mb-4 bg-white flex items-center justify-center">
                 {!imgErr[doctor.id] ? (

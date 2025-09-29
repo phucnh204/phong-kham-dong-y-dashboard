@@ -4,7 +4,8 @@ import { MotionFadeIn, MotionSection } from "../MotionWrappers";
 export default function Footer() {
   return (
     <div
-      id="footer"
+      // id="footer"
+
       className="bg-gradient-to-br from-emerald-700 via-green-600 to-emerald-500 text-white"
     >
       {/* CTA Section - blend màu, đồng bộ với phần dưới */}

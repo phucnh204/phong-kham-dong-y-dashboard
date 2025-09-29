@@ -24,7 +24,10 @@ export default function DatLichPage() {
     }, 2000);
   };
   return (
-    <div className="relative  w-full flex items-center justify-center bg-gradient-to-br from-[#ffffff] via-[#cfebaf] to-[#e4f7f9] font-inter overflow-x-hidden">
+    <div
+      id="dat-lich"
+      className="relative  w-full flex items-center justify-center bg-gradient-to-br from-[#ffffff] via-[#cfebaf] to-[#e4f7f9] font-inter overflow-x-hidden"
+    >
       {/* BG Blur + Light */}
       {/* <div className="absolute inset-0 -z-20 pointer-events-none bg-gradient-to-br from-[#d8f3f7]/80 to-[#f4fffd]/70" />
       <div className="absolute inset-0 -z-10 pointer-events-none backdrop-blur-[2px]" /> */}

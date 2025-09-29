@@ -16,6 +16,7 @@ import {
   Newspaper,
   EllipsisVertical,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const MENU_ITEMS = [
   {
@@ -29,6 +30,12 @@ const MENU_ITEMS = [
     label: { vi: "Giới thiệu", en: "About" },
   },
   {
+    href: "/san-pham",
+    icon: Newspaper,
+    label: { vi: "Sản phẩm", en: "Product" },
+    isRoute: true,
+  },
+  {
     href: "#service",
     icon: Stethoscope,
     label: { vi: "Dịch vụ", en: "Services" },
@@ -38,23 +45,23 @@ const MENU_ITEMS = [
     icon: Users,
     label: { vi: "Đội ngũ", en: "Doctors" },
   },
+
   {
-    href: "#blog",
-    icon: Newspaper,
-    label: { vi: "Bài viết", en: "Blog" },
-    comingSoon: true,
-  },
-  {
-    href: "#footer",
+    href: "/dat-lich",
     icon: Phone,
     label: { vi: "Liên hệ", en: "Contact" },
+    isRoute: true,
   },
 ];
 
 const SUBMENU = [
   // { href: "#new", label: { vi: "Tin tức", en: "News" } },
   { href: "#blog", label: { vi: "Bài viết", en: "Articles" } },
-  { href: "dat-lich", label: { vi: "Đặt lịch", en: "Booking" } },
+  {
+    href: "/dat-lich",
+    label: { vi: "Đặt lịch", en: "Booking" },
+    isRoute: true,
+  },
   // { href: "#", label: { vi: "Tư vấn", en: "Consultation" } },
 ];
 
@@ -69,7 +76,7 @@ export default function Navbar() {
   const [lang, setLang] = useState<"vi" | "en">("vi");
   const [showLang, setShowLang] = useState(false);
   const navRef = useRef<HTMLElement>(null);
-
+  const router = useRouter();
   // Scrollspy
   useEffect(() => {
     const handleScroll = () => {
@@ -158,23 +165,31 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const handleNavClick = (href: string) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    setActive(href.replace("#", ""));
-    const el = document.getElementById(href.replace("#", ""));
-    const navbar = navRef.current;
-    const navbarHeight = navbar ? navbar.offsetHeight : 0;
-    const top = el ? el.offsetTop - navbarHeight - 20 : 0;
-    if (window.innerWidth < 1024) {
-      setMenuOpen(false);
-      setTimeout(
-        () => window.scrollTo({ top: Math.max(0, top), behavior: "instant" }),
-        400
-      );
-    } else {
-      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
-    }
-  };
+  const handleNavClick =
+    (href: string, isRoute = false) =>
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      if (isRoute || href.startsWith("/")) {
+        setMenuOpen(false);
+        setTimeout(() => router.push(href), 200); // delay cho menu đóng mượt
+      } else {
+        setActive(href.replace("#", ""));
+        const el = document.getElementById(href.replace("#", ""));
+        const navbar = navRef.current;
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        const top = el ? el.offsetTop - navbarHeight - 20 : 0;
+        if (window.innerWidth < 1024) {
+          setMenuOpen(false);
+          setTimeout(
+            () =>
+              window.scrollTo({ top: Math.max(0, top), behavior: "instant" }),
+            400
+          );
+        } else {
+          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        }
+      }
+    };
 
   return (
     <>
