@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useDoctors } from "@/hooks/useDoctors";
-import { Phone, BadgeCheck, UserRound } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 
 // List icon và style có thể mở rộng thêm
 
@@ -11,10 +11,10 @@ export default function CardDoctorGrid() {
   const { data: doctors = [], isLoading, error } = useDoctors();
   const [showAll, setShowAll] = useState(false);
   const [imgErr, setImgErr] = useState({});
-  const VISIBLE = 4;
+  const VISIBLE = 8;
   const displayed = showAll ? doctors : doctors.slice(0, VISIBLE);
 
-  const getExtras = (doctor) => ({
+  const getExtras = (doctor: any) => ({
     position: doctor.position || "Bác sĩ chuyên khoa",
     experience: doctor.experience || "15+ năm kinh nghiệm",
     phone: doctor.phone || "0989 861 548",
@@ -74,92 +74,66 @@ export default function CardDoctorGrid() {
         </div>
       )}
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-2 px-2 md:px-0 lg:mx-6">
+      {/* Doctor Grid Section */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 lg:px-10 py-14 bg-gradient-to-b from-white via-green-50/40 to-white">
         {displayed.map((doctor) => {
           const ext = getExtras(doctor);
           return (
             <div
               key={doctor.id}
-              className="bg-white rounded shadow-xl border border-emerald-100 hover:shadow-emerald-200 hover:border-emerald-400 hover:scale-[1.037] transition-all duration-300 flex flex-col items-center px-6 py-8 relative overflow-hidden min-h-[440px]"
+              className="group relative flex flex-col items-center text-center bg-white rounded border border-green-100 shadow-md hover:shadow-2xl hover:border-green-300/70 transition-all duration-500 ease-out overflow-hidden"
             >
+              {/* Glow halo on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-green-50/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
               {/* Avatar */}
-              <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-emerald-200 shadow-lg mb-4 bg-white flex items-center justify-center">
-                {!imgErr[doctor.id] ? (
+              <div className="relative mt-8 mb-3">
+                <div className="w-28 h-28 rounded-full border-[3px] border-green-100 shadow-lg overflow-hidden mx-auto bg-white ring-1 ring-emerald-50 group-hover:ring-green-300 transition-all duration-500">
                   <Image
                     src={doctor.imageUrl}
                     alt={doctor.name}
                     width={120}
                     height={120}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full scale-105 group-hover:scale-110 transition-transform duration-700 ease-out"
+                    draggable={false}
                     onError={() =>
                       setImgErr((prev) => ({ ...prev, [doctor.id]: true }))
                     }
-                    draggable={false}
                     unoptimized={doctor.imageUrl?.startsWith("http")}
                   />
-                ) : (
-                  <UserRound className="text-emerald-300 text-7xl" />
-                )}
+                </div>
               </div>
 
-              {/* Name & position */}
-              <div className="flex flex-col items-center text-center mb-2">
-                <h3 className="font-bold text-emerald-800 text-lg uppercase leading-tight flex items-center gap-2">
-                  {ext.degree && (
-                    <span className="font-bold text-green-600 text-base">
-                      {ext.degree}.
-                    </span>
-                  )}{" "}
-                  <span className="text-xl md:text-2xl font-extrabold text-green-700">
-                    {doctor.name}
-                  </span>
-                  <BadgeCheck className="text-yellow-400" size={20} />
+              {/* Info */}
+              <div className="px-5 flex flex-col flex-1 items-center">
+                <h3 className="text-lg md:text-xl font-extrabold text-green-700 mb-1 flex items-center gap-2 leading-tight">
+                  {doctor.name}
+                  <BadgeCheck
+                    className="text-amber-400 group-hover:scale-125 transition-transform duration-300"
+                    size={18}
+                  />
                 </h3>
-                <span className="font-semibold text-green-700 text-sm mt-1">
+
+                <span className="text-[13px] md:text-sm font-semibold text-green-600 uppercase tracking-wide">
                   {ext.position}
                 </span>
-                <span className="text-gray-500 font-medium text-sm">
+                <span className="text-gray-500 text-sm mt-0.5">
                   {ext.field}
                 </span>
+
+                {/* Divider */}
+                <div className="w-10 h-[2px] bg-green-200 my-4 rounded-full group-hover:w-16 group-hover:bg-green-400 transition-all duration-500"></div>
+
+                {/* Contact Button */}
+                <a
+                  href={`tel:${ext.phone.replace(/\D/g, "")}`}
+                  className="mt-auto mb-8"
+                >
+                  <button className="px-6 py-2.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold uppercase shadow-md hover:shadow-lg hover:scale-105 transition-all duration-500 tracking-wide">
+                    Liên hệ
+                  </button>
+                </a>
               </div>
-
-              {/* Bullet chuyên môn – kinh nghiệm */}
-              <ul className="text-left w-full text-gray-700 text-[15px] mt-4 mb-2 px-1 list-disc list-inside">
-                {ext.bullets.map((b, i) => (
-                  <li key={i} className="mb-1">
-                    {b}
-                  </li>
-                ))}
-                {/* Có thể thêm giải thưởng/kinh nghiệm nếu muốn */}
-              </ul>
-
-              {/* Extra info: kinh nghiệm, tổ chức, sđt */}
-              <div className="w-full flex flex-col gap-2 mt-2 mb-4 text-[14px]">
-                <div className="flex items-center gap-2">
-                  <BadgeCheck className="text-emerald-500" size={15} />
-                  <b>Kinh nghiệm:</b> <span>{ext.experience}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="text-green-600" size={15} />
-                  <b>Hotline:</b> <span>{ext.phone}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <UserRound className="text-green-600" size={15} />
-                  <b>Tổ chức:</b> <span>{ext.org}</span>
-                </div>
-              </div>
-
-              {/* Nút liên hệ/tư vấn */}
-              <a
-                href={`tel:${ext.phone.replace(/\D/g, "")}`}
-                className="mt-auto w-full flex justify-center"
-                tabIndex={0}
-              >
-                <button className="px-5 py-2 rounded-xl bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold uppercase shadow hover:scale-105 hover:from-green-600 hover:to-emerald-500 transition duration-200 text-base tracking-wide outline-none w-full max-w-[210px]">
-                  Liên hệ tư vấn
-                </button>
-              </a>
             </div>
           );
         })}

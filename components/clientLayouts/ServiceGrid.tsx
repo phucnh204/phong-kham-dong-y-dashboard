@@ -49,7 +49,7 @@ export default function ServiceGrid() {
 
       {/* SERVICES API GRID */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {displayed.map((service, index) => (
             <div
               key={service.id}

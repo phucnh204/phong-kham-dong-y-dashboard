@@ -8,23 +8,23 @@ const accessMatrix = [
   },
   {
     pathPrefix: "/doctor",
-    allow: ["doctor", "admin"],
+    allow: ["doctor"], //, "admin"
   },
   {
     pathPrefix: "/pharma",
-    allow: ["pharmacist", "admin"],
+    allow: ["pharmacist"], //, "admin"
   },
   {
     pathPrefix: "/nurse",
-    allow: ["nurse", "admin"],
+    allow: ["nurse"], //, "admin"
   },
   {
     pathPrefix: "/staff",
-    allow: ["staff", "admin", "receptionist"],
+    allow: ["staff"], //, "admin""receptionist"],
   },
   {
     pathPrefix: "/reception",
-    allow: ["receptionist", "admin"],
+    allow: ["receptionist"], //, "admin"
   },
 ];
 
